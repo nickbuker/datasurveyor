@@ -75,7 +75,7 @@ def test_validate_dtype_bad_float():
 
 def test_check_all_same_good():
     # verifies good data passes the all same check
-    assert not bf.check_all_same(bad_same1).all()
+    assert not bf.check_all_same(good).any()
 
 
 def test_check_all_same_bad():
@@ -85,7 +85,7 @@ def test_check_all_same_bad():
 
 def test_check_mostly_same_good():
     # verifies good data passes the mostly same check
-    assert not bf.check_mostly_same(good).all()
+    assert not bf.check_mostly_same(good).any()
 
 
 def test_check_mostly_same_bad1():
@@ -95,7 +95,7 @@ def test_check_mostly_same_bad1():
 
 def test_check_range_good():
     # verifies good data passes the range check
-    assert not bf.check_range(good).all()
+    assert not bf.check_range(good).any()
 
 
 def test_check_range_bad1():
