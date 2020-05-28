@@ -30,6 +30,13 @@ bad_fuzzy2 = pd.DataFrame.from_dict({
     'b2': (1, 0, 1, 0),
 })
 
+# should fail fuzzy null check with added fuzzy
+bad_fuzzy3 = pd.DataFrame.from_dict({
+    'b1': ('True', 'foo', 'False', 'True'),
+    'b2': (1, 0, 1, 0),
+})
+
+
 
 # series that should match output of failed checks
 fail_series_bool = pd.Series([True, False], index=['b1', 'b2'])
@@ -74,3 +81,13 @@ def test_fuzzy_nulls_bad2_bool():
 def test_fuzzy_nulls_bad2_count():
     # verifies that the fuzzy null check counts fuzzy nulls in each row
     assert fail_series_counts.equals(gf.check_fuzzy_nulls(bad_fuzzy2, counts=True))
+
+
+def test_fuzzy_nulls_bad3_bool():
+    # verifies that the fuzzy null check finds rows with added fuzzy nulls
+    assert fail_series_bool.equals(gf.check_fuzzy_nulls(bad_fuzzy3, add_fuzzy_nulls=['foo'], counts=False))
+
+
+def test_fuzzy_nulls_bad3_count():
+    # verifies that the fuzzy null check counts added fuzzy nulls in each row
+    assert fail_series_counts.equals(gf.check_fuzzy_nulls(bad_fuzzy3, add_fuzzy_nulls=['foo'],  counts=True))
