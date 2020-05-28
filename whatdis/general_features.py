@@ -31,7 +31,7 @@ def check_fuzzy_nulls(
 
     Args:
         df: Data to be checked for fuzzy nulls.
-        add_fuzzy_nulls: Additional items check as fuzzy nulls.
+        add_fuzzy_nulls: Additional items to check as fuzzy nulls.
         counts: If True, returns counts of fuzzy nulls, if False, returns boolean indicators of fuzzy nulls.
 
     Returns:
