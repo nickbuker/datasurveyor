@@ -38,7 +38,7 @@ def check_fuzzy_nulls(
         Series with index of column names and values fuzzy null counts if `counts` is True, or bools
         indicating presence of fuzzy nulls if `counts` is False.
     """
-    fuzzy_nulls = ['null', 'Null', 'NA', '', ' ']
+    fuzzy_nulls = ['null', 'Null', 'NULL', '', ' ']
     if add_fuzzy_nulls is not None:
         fuzzy_nulls.extend(add_fuzzy_nulls)
     if counts:

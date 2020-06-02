@@ -26,7 +26,7 @@ bad_fuzzy1 = pd.DataFrame.from_dict({
 
 # should fail fuzzy null check
 bad_fuzzy2 = pd.DataFrame.from_dict({
-    'b1': ('True', 'NA', 'False', 'True'),
+    'b1': ('True', 'NULL', 'False', 'True'),
     'b2': (1, 0, 1, 0),
 })
 
@@ -35,8 +35,6 @@ bad_fuzzy3 = pd.DataFrame.from_dict({
     'b1': ('True', 'foo', 'False', 'True'),
     'b2': (1, 0, 1, 0),
 })
-
-
 
 # series that should match output of failed checks
 fail_series_bool = pd.Series([True, False], index=['b1', 'b2'])
