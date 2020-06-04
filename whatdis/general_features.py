@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def check_nulls(df: pd.DataFrame, counts: bool = False) -> pd.Series:
-    """Check if DataFrame contains columns with nulls.
+    """Checks if DataFrame contains columns with nulls.
 
     Args:
         df: Data to be checked for nulls.
@@ -27,7 +27,7 @@ def check_fuzzy_nulls(
         add_fuzzy_nulls: Optional[List] = None,
         counts: bool = False,
 ) -> pd.Series:
-    """Check if DataFrame contains columns with fuzzy nulls.
+    """Checks if DataFrame contains columns with fuzzy nulls.
 
     Args:
         df: Data to be checked for fuzzy nulls.
