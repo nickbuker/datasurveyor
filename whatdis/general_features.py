@@ -1,3 +1,4 @@
+# TODO make compatible with pandas Series
 # standard library imports
 from typing import List, Optional
 # third party imports
