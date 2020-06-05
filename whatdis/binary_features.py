@@ -21,11 +21,12 @@ def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     """
     is_df = utils.check_if_df(data)
     err_message = 'Binary feature columns should be of type bool or int64.'
+    types = (np.dtype(bool), np.dtype(int))
     if is_df:
-        if not data.dtypes.isin((np.dtype(bool), np.dtype(int))).all():
+        if not data.dtypes.isin(types).all():
             raise TypeError(err_message)
     else:
-        if data.dtypes not in (np.dtype(bool), np.dtype(int)):
+        if data.dtypes not in types:
             raise TypeError(err_message)
     return
 
