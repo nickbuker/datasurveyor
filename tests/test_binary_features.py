@@ -52,57 +52,113 @@ bad_range2 = pd.DataFrame.from_dict({
 fail_series = pd.Series([True, False], index=['b1', 'b2'])
 
 
-def test_validate_dtype_good():
+def test_validate_dtype_good_df():
     # verifies good data passes the dtype check
-    bf.validate_dtype(good)
+    bf.validate_binary_dtype(good)
 
 
-def test_validate_dtype_bad_str():
+def test_validate_dtype_good_ser():
+    # verifies good data passes the dtype check
+    bf.validate_binary_dtype(good['g1'])
+
+
+def test_validate_dtype_bad_str_df():
     # checks that TypeError is raised when df contains object (str) data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_dtype(bad_type1)
+        bf.validate_binary_dtype(bad_type1)
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
 
-def test_validate_dtype_bad_float():
+def test_validate_dtype_bad_str_ser():
+    # checks that TypeError is raised when series contains object (str) data
+    with pytest.raises(TypeError) as excinfo:
+        bf.validate_binary_dtype(bad_type1['b1'])
+    # verifies TypeError contains appropriate message
+    assert 'should be of type bool or int64' in str(excinfo.value)
+
+
+def test_validate_dtype_bad_float_df():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_dtype(bad_type2)
+        bf.validate_binary_dtype(bad_type2)
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
 
-def test_check_all_same_good():
+def test_validate_dtype_bad_float_ser():
+    # checks that TypeError is raised when series contains float data
+    with pytest.raises(TypeError) as excinfo:
+        bf.validate_binary_dtype(bad_type2['b1'])
+    # verifies TypeError contains appropriate message
+    assert 'should be of type bool or int64' in str(excinfo.value)
+
+
+def test_check_all_same_good_df():
     # verifies good data passes the all same check
     assert not bf.check_all_same(good).any(axis=0)
 
 
-def test_check_all_same_bad():
+def test_check_all_same_good_ser():
+    # verifies good data passes the all same check
+    assert not bf.check_all_same(good['g1'])
+
+
+def test_check_all_same_bad_df():
     # verifies that the all same check finds rows with all the same value
     assert fail_series.equals(bf.check_all_same(bad_same1))
 
 
-def test_check_mostly_same_good():
+def test_check_all_same_bad_ser():
+    # verifies that the all same check finds rows with all the same value
+    assert fail_series['b1'] == bf.check_all_same(bad_same1['b1'])
+
+
+def test_check_mostly_same_good_df():
     # verifies good data passes the mostly same check
     assert not bf.check_mostly_same(good).any(axis=0)
 
 
-def test_check_mostly_same_bad1():
+def test_check_mostly_same_good_ser():
+    # verifies good data passes the mostly same check
+    assert not bf.check_mostly_same(good['g1'])
+
+
+def test_check_mostly_same_bad1_df():
     # verifies that the mostly same check finds rows with mostly the same value
     assert fail_series.equals(bf.check_mostly_same(bad_same2, 0.7))
 
 
-def test_check_range_good():
+def test_check_mostly_same_bad1_ser():
+    # verifies that the mostly same check finds rows with mostly the same value
+    assert fail_series['b1'] == bf.check_mostly_same(bad_same2['b1'], 0.7)
+
+
+def test_check_range_good_df():
     # verifies good data passes the range check
     assert not bf.check_range(good).any(axis=0)
 
 
-def test_check_range_bad1():
+def test_check_range_good_ser():
+    # verifies good data passes the range check
+    assert not bf.check_range(good['g1']).any(axis=0)
+
+
+def test_check_range_bad1_df():
     # verifies that the range check finds rows with low values
     assert fail_series.equals(bf.check_range(bad_range1))
 
 
-def test_check_range_bad2():
+def test_check_range_bad1_ser():
+    # verifies that the range check finds rows with low values
+    assert fail_series['b1'] == bf.check_range(bad_range1['b1'])
+
+
+def test_check_range_bad2_df():
     # verifies that the range check finds rows with high values
     assert fail_series.equals(bf.check_range(bad_range2))
+
+
+def test_check_range_bad2_ser():
+    # verifies that the range check finds rows with high values
+    assert fail_series['b1'] == bf.check_range(bad_range2['b1'])

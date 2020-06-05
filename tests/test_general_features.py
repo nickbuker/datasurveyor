@@ -41,51 +41,111 @@ fail_series_bool = pd.Series([True, False], index=['b1', 'b2'])
 fail_series_counts = pd.Series([1, 0], index=['b1', 'b2'])
 
 
-def test_check_nulls_good():
+def test_check_nulls_good_bool_df():
     # verifies good data passes the null check
     assert not gf.check_nulls(good).any(axis=0)
 
 
-def test_check_nulls_bad_bool():
+def test_check_nulls_good_bool_ser():
+    # verifies good data passes the null check
+    assert not gf.check_nulls(good['g1'])
+
+
+def test_check_nulls_good_count_df():
+    # verifies good data passes the null check
+    assert gf.check_nulls(good, counts=True).sum(axis=0) == 0
+
+
+def test_check_nulls_good_count_ser():
+    # verifies good data passes the null check
+    assert gf.check_nulls(good['g1'], counts=True) == 0
+
+
+def test_check_nulls_bad_bool_df():
     # verifies that the null check finds rows with nulls
     assert fail_series_bool.equals(gf.check_nulls(bad_nulls1, counts=False))
 
 
-def test_check_nulls_bad_counts():
+def test_check_nulls_bad_bool_ser():
+    # verifies that the null check finds rows with nulls
+    assert fail_series_bool['b1'] == gf.check_nulls(bad_nulls1['b1'], counts=False)
+
+
+def test_check_nulls_bad_counts_df():
     # verifies that the null check counts nulls in each row
     assert fail_series_counts.equals(gf.check_nulls(bad_nulls1, counts=True))
 
 
-def test_fuzzy_nulls_good():
+def test_check_nulls_bad_counts_ser():
+    # verifies that the null check counts nulls in each row
+    assert fail_series_counts['b1'] == gf.check_nulls(bad_nulls1['b1'], counts=True)
+
+
+def test_fuzzy_nulls_good_df():
     # verifies good data passes the null check
     assert not gf.check_fuzzy_nulls(good).any(axis=0)
 
 
-def test_fuzzy_nulls_bad1_bool():
+def test_fuzzy_nulls_good_ser():
+    # verifies good data passes the null check
+    assert not gf.check_fuzzy_nulls(good['g1'])
+
+
+def test_fuzzy_nulls_bad1_bool_df():
     # verifies that the fuzzy null check finds rows with fuzzy nulls
     assert fail_series_bool.equals(gf.check_fuzzy_nulls(bad_fuzzy1, counts=False))
 
 
-def test_fuzzy_nulls_bad1_count():
+def test_fuzzy_nulls_bad1_bool_ser():
+    # verifies that the fuzzy null check finds rows with fuzzy nulls
+    assert fail_series_bool['b1'] == gf.check_fuzzy_nulls(bad_fuzzy1['b1'], counts=False)
+
+
+def test_fuzzy_nulls_bad1_count_df():
     # verifies that the fuzzy null check counts fuzzy nulls in each row
     assert fail_series_counts.equals(gf.check_fuzzy_nulls(bad_fuzzy1, counts=True))
 
 
-def test_fuzzy_nulls_bad2_bool():
+def test_fuzzy_nulls_bad1_count_ser():
+    # verifies that the fuzzy null check counts fuzzy nulls in each row
+    assert fail_series_counts['b1'] == gf.check_fuzzy_nulls(bad_fuzzy1['b1'], counts=True)
+
+
+def test_fuzzy_nulls_bad2_bool_df():
     # verifies that the fuzzy null check finds rows with fuzzy nulls
     assert fail_series_bool.equals(gf.check_fuzzy_nulls(bad_fuzzy2, counts=False))
 
 
-def test_fuzzy_nulls_bad2_count():
+def test_fuzzy_nulls_bad2_bool_ser():
+    # verifies that the fuzzy null check finds rows with fuzzy nulls
+    assert fail_series_bool['b1'] == gf.check_fuzzy_nulls(bad_fuzzy2['b1'], counts=False)
+
+
+def test_fuzzy_nulls_bad2_count_df():
     # verifies that the fuzzy null check counts fuzzy nulls in each row
     assert fail_series_counts.equals(gf.check_fuzzy_nulls(bad_fuzzy2, counts=True))
 
 
-def test_fuzzy_nulls_bad3_bool():
+def test_fuzzy_nulls_bad2_count_ser():
+    # verifies that the fuzzy null check counts fuzzy nulls in each row
+    assert fail_series_counts['b1'] == gf.check_fuzzy_nulls(bad_fuzzy2['b1'], counts=True)
+
+
+def test_fuzzy_nulls_bad3_bool_df():
     # verifies that the fuzzy null check finds rows with added fuzzy nulls
     assert fail_series_bool.equals(gf.check_fuzzy_nulls(bad_fuzzy3, add_fuzzy_nulls=['foo'], counts=False))
 
 
-def test_fuzzy_nulls_bad3_count():
+def test_fuzzy_nulls_bad3_bool_ser():
+    # verifies that the fuzzy null check finds rows with added fuzzy nulls
+    assert fail_series_bool['b1'] == gf.check_fuzzy_nulls(bad_fuzzy3['b1'], add_fuzzy_nulls=['foo'], counts=False)
+
+
+def test_fuzzy_nulls_bad3_count_df():
     # verifies that the fuzzy null check counts added fuzzy nulls in each row
     assert fail_series_counts.equals(gf.check_fuzzy_nulls(bad_fuzzy3, add_fuzzy_nulls=['foo'],  counts=True))
+
+
+def test_fuzzy_nulls_bad3_count_ser():
+    # verifies that the fuzzy null check counts added fuzzy nulls in each row
+    assert fail_series_counts['b1'] == gf.check_fuzzy_nulls(bad_fuzzy3['b1'], add_fuzzy_nulls=['foo'],  counts=True)
