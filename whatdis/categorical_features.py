@@ -28,7 +28,42 @@ def validate_categorical_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     return
 
 
-def check_n_categories(data: Union[pd.DataFrame, pd.Series], dropna=True) -> Union[pd.Series, int]:
+def check_all_same(
+        data: Union[pd.DataFrame, pd.Series],
+        dropna: bool = True,
+) -> Union[pd.Series, bool]:
+    """TODO
+
+    Args:
+        data:
+        dropna:
+
+    Returns:
+
+    """
+    pass
+
+
+def check_mostly_same(
+        data: Union[pd.DataFrame, pd.Series],
+        dropna: bool = True,
+) -> Union[pd.Series, bool]:
+    """TODO
+
+    Args:
+        data:
+        dropna:
+
+    Returns:
+
+    """
+    pass
+
+
+def check_n_categories(
+        data: Union[pd.DataFrame, pd.Series],
+        dropna: bool = True,
+) -> Union[pd.Series, int]:
     """TODO
 
     Args:
