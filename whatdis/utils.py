@@ -39,11 +39,9 @@ def result_to_df(
     """
     if isinstance(data, pd.Series):
         d = {'column': data.index, title: data.values}
-        if kwargs:
-            kwargs = {k: (v,) * data.shape[0] for k, v in kwargs.items()}
     else:
         d = {'check': (title,), 'result': (data,)}
         if kwargs:
             kwargs = {k: (v,) for k, v in kwargs.items()}
     d.update(kwargs)
-    return pd.DataFrame.from_dict(d)
+    return pd.DataFrame.from_dict(d).reset_index(drop=True)
