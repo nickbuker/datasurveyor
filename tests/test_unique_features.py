@@ -26,9 +26,25 @@ bad_unique = pd.DataFrame.from_dict({
     'b2': ('foo', 'bar', 'baz', 'boo'),
 })
 
-# series that should match output of failed checks
-fail_series_bool = pd.Series([True, False], index=['b1', 'b2'])
-fail_series_counts = pd.Series([2, 0], index=['b1', 'b2'])
+# should fail duplicates test with dropna=False
+bad_unique_nan = pd.DataFrame.from_dict({
+    'b1': ('foo', 'bar', 'baz', np.nan),
+    'b2': (0, 1, 2, 3),
+})
+
+# fail DataFrames for fuzzy nulls
+fail_dupe_df = pd.DataFrame.from_dict({
+    'column': ('b1', 'b2'),
+    'dupes_present': (True, False),
+    'dupe_count': (2, 0),
+    'prop_dupe': (0.5, 0.0)
+})
+fail_dupe_ser = pd.DataFrame.from_dict({
+    'check': ('dupes_present',),
+    'result': (True,),
+    'dupe_count': (2,),
+    'prop_dupe': (0.5,),
+})
 
 
 def test_validate_dtype_good_df():
@@ -57,41 +73,23 @@ def test_validate_dtype_bad_ser():
     assert 'should be of type object, int64, or datetime64' in str(excinfo.value)
 
 
-def test_check_uniqueness_good_bool_df():
+def test_check_uniqueness_good_df():
     # verifies that good data passes uniqueness check (bool)
-    assert not uf.check_uniqueness(good, counts=False).any()
+    cols = ['dupes_present', 'dupe_count', 'prop_dupe']
+    assert not uf.check_uniqueness(good).loc[:, cols].any(axis=None)
 
 
-def test_check_uniqueness_good_bool_ser():
+def test_check_uniqueness_good_ser():
     # verifies that good data passes uniqueness check (bool)
-    assert not uf.check_uniqueness(good['g1'], counts=False)
+    cols = ['result', 'dupe_count', 'prop_dupe']
+    assert not uf.check_uniqueness(good['g1']).loc[:, cols].any(axis=None)
 
 
-def test_check_uniqueness_good_counts_df():
-    # verifies that good data passes uniqueness check (counts)
-    assert uf.check_uniqueness(good, counts=True).max() == 0
-
-
-def test_check_uniqueness_good_counts_ser():
-    # verifies that good data passes uniqueness check (counts)
-    assert uf.check_uniqueness(good['g1'], counts=True) == 0
-
-
-def test_check_uniques_bad_bool_df():
+def test_check_uniques_bad_df():
     # verifies that the uniqueness check find duplicates (bool)
-    assert uf.check_uniqueness(bad_unique, counts=False).equals(fail_series_bool)
+    assert fail_dupe_df.equals(uf.check_uniqueness(bad_unique))
 
 
-def test_check_uniques_bad_bool_ser():
+def test_check_uniques_bad_ser():
     # verifies that the uniqueness check find duplicates (bool)
-    assert uf.check_uniqueness(bad_unique['b1'], counts=False) == (fail_series_bool['b1'])
-
-
-def test_check_uniques_bad_counts_df():
-    # verifies that the uniqueness check finds duplicates (counts)
-    assert uf.check_uniqueness(bad_unique, counts=True).equals(fail_series_counts)
-
-
-def test_check_uniques_bad_counts_ser():
-    # verifies that the uniqueness check finds duplicates (counts)
-    assert uf.check_uniqueness(bad_unique['b1'], counts=True) == (fail_series_counts['b1'])
+    assert fail_dupe_ser.equals(uf.check_uniqueness(bad_unique['b1']))
