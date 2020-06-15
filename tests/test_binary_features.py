@@ -1,3 +1,4 @@
+# TODO update tests
 # third party imports
 import pandas as pd
 import pytest
@@ -136,29 +137,29 @@ def test_check_mostly_same_bad1_ser():
 
 def test_check_range_good_df():
     # verifies good data passes the range check
-    assert not bf.check_range(good).any(axis=0)
+    assert not bf.check_outside_range(good).any(axis=0)
 
 
 def test_check_range_good_ser():
     # verifies good data passes the range check
-    assert not bf.check_range(good['g1']).any(axis=0)
+    assert not bf.check_outside_range(good['g1']).any(axis=0)
 
 
 def test_check_range_bad1_df():
     # verifies that the range check finds rows with low values
-    assert fail_series.equals(bf.check_range(bad_range1))
+    assert fail_series.equals(bf.check_outside_range(bad_range1))
 
 
 def test_check_range_bad1_ser():
     # verifies that the range check finds rows with low values
-    assert fail_series['b1'] == bf.check_range(bad_range1['b1'])
+    assert fail_series['b1'] == bf.check_outside_range(bad_range1['b1'])
 
 
 def test_check_range_bad2_df():
     # verifies that the range check finds rows with high values
-    assert fail_series.equals(bf.check_range(bad_range2))
+    assert fail_series.equals(bf.check_outside_range(bad_range2))
 
 
 def test_check_range_bad2_ser():
     # verifies that the range check finds rows with high values
-    assert fail_series['b1'] == bf.check_range(bad_range2['b1'])
+    assert fail_series['b1'] == bf.check_outside_range(bad_range2['b1'])

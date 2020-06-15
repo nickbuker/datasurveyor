@@ -1,3 +1,4 @@
+# TODO update docstrings
 # standard library imports
 from typing import Union
 # third party imports
@@ -31,7 +32,7 @@ def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     return
 
 
-def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.Series, bool]:
+def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.DataFrame]:
     """Checks if binary data contains columns where all values are the same.
 
     Args:
@@ -44,16 +45,17 @@ def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.Series, boo
     """
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
+    title = 'all_same'
     if is_df:
-        return data.min(axis=0).eq(data.max(axis=0))
+        return utils.result_to_df(data.min(axis=0).eq(data.max(axis=0)), title=title)
     else:
-        return data.min() == data.max()
+        return utils.result_to_df(data.min() == data.max(), title=title)
 
 
 def check_mostly_same(
         data: Union[pd.DataFrame, pd.Series],
         thresh: float = 0.95,
-) -> Union[pd.Series, bool]:
+) -> pd.DataFrame:
     """Checks if binary data contains columns where almost all values are the same.
 
     Args:
@@ -74,19 +76,21 @@ def check_mostly_same(
         raise ValueError('The thresh parameter must be greater than 0.0 and less than 1.0.')
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
+    title = 'mostly_same'
     if is_df:
         means = data.mean(axis=0)
-        return (means >= thresh) | (means <= 1 - thresh)
+        result = (means >= thresh) | (means <= 1 - thresh)
     else:
         mean = data.mean()
-        return mean >= thresh or mean <= 1 - thresh
+        result = mean >= thresh or mean <= 1 - thresh
+    return utils.result_to_df(data=result, title=title, thresh=thresh)
 
 
-def check_range(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.Series, bool]:
+def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
     """Checks if binary data contains columns where min is less than 0 or max is greater than 1.
     
     Args:
-        data: Binary data to be checked if all values are less than 0 or greater than 1.
+        data: Binary data to be checked if any values are less than 0 or greater than 1.
 
     Returns:
         If `data` is a DataFrame, returns a Series with index of column names and values of bools
@@ -95,7 +99,9 @@ def check_range(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.Series, bool]:
     """
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
+    title = 'outside_range'
     if is_df:
-        return (data.min(axis=0) < 0) | (data.max(axis=0) > 1)
+        result = (data.min(axis=0) < 0) | (data.max(axis=0) > 1)
     else:
-        return data.min() < 0 or data.max() > 1
+        result = data.min() < 0 or data.max() > 1
+    return utils.result_to_df(data=result, title=title)
