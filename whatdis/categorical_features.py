@@ -88,11 +88,3 @@ def check_n_categories(
     else:
         result = data.nunique(dropna=dropna)
     return utils.result_to_df(result, title='n_categories')
-
-
-if __name__ == '__main__':
-    good = pd.DataFrame.from_dict({
-        'g1': ('a', 'b', 'c', 'd'),
-        'g2': (0, 1, 1, 0),
-    })
-    print(check_mostly_same(data=good))

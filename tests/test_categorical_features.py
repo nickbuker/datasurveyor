@@ -1,4 +1,3 @@
-# TODO: add tests for mostly same
 # third party imports
 import numpy as np
 import pandas as pd
@@ -26,7 +25,23 @@ bad_type = pd.DataFrame.from_dict({
 })
 
 
-# series that should match output of check_n_categories
+# DataFrames that should match output of check_n_categories
+mostly_same_out1 = pd.DataFrame.from_dict({
+    'column': ('g1', 'g2'),
+    'mostly_same': (False, True),
+    'thresh': (0.4, 0.4),
+    'most_common': ('a', 0),
+    'count': (1, 2),
+    'prop': (0.25, 0.5),
+})
+# DataFrames that should match output of check_n_categories
+mostly_same_out2 = pd.DataFrame.from_dict({
+    'mostly_same': (True,),
+    'thresh': (0.4,),
+    'most_common': (0,),
+    'count': (2,),
+    'prop': (0.5,),
+})
 good_result = pd.DataFrame.from_dict({
     'column': ('g1', 'g2'),
     'n_categories': (4, 2)
@@ -65,6 +80,17 @@ def test_validate_categorical_dtype_bad_ser():
         cf.validate_categorical_dtype(bad_type['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type object or int64' in str(excinfo.value)
+
+
+def test_mostly_same_df():
+    # verifies mostly same output matches expectation
+    assert mostly_same_out1.equals(cf.check_mostly_same(good, thresh=0.4))
+
+
+def test_mostly_same_ser():
+    # verifies mostly same output matches expectation
+    cols = ['mostly_same', 'thresh', 'most_common', 'count', 'prop']
+    assert mostly_same_out2.equals(cf.check_mostly_same(good['g2'], thresh=0.4))
 
 
 def test_check_n_categories_df():
