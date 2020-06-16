@@ -45,3 +45,17 @@ def result_to_df(
             kwargs = {k: (v,) for k, v in kwargs.items()}
     d.update(kwargs)
     return pd.DataFrame.from_dict(d).reset_index(drop=True)
+
+
+def validate_thresh(thresh: float) -> None:
+    """
+
+    Args:
+        thresh:
+
+    Returns:
+
+    """
+    if thresh >= 1.0 or thresh <= 0.0:
+        raise ValueError('The thresh parameter must be greater than 0.0 and less than 1.0.')
+    return
