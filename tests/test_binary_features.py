@@ -48,9 +48,6 @@ bad_range2 = pd.DataFrame.from_dict({
     'b2': (False, True, False, True),
 })
 
-# series that should match output of failed checks
-fail_series = pd.Series([True, False], index=['b1', 'b2'])
-
 
 def test_validate_dtype_good_df():
     # verifies good data passes the dtype check
@@ -96,69 +93,77 @@ def test_validate_dtype_bad_float_ser():
 
 def test_check_all_same_good_df():
     # verifies good data passes the all same check
-    assert not bf.check_all_same(good).any(axis=0)
+    assert not bf.check_all_same(good).loc[:, 'all_same'].any()
 
 
 def test_check_all_same_good_ser():
     # verifies good data passes the all same check
-    assert not bf.check_all_same(good['g1'])
+    assert not bf.check_all_same(good['g1']).loc[:, 'all_same'].any()
 
 
 def test_check_all_same_bad_df():
     # verifies that the all same check finds rows with all the same value
-    assert fail_series.equals(bf.check_all_same(bad_same1))
+    fail = pd.DataFrame.from_dict({'column': ('b1', 'b2'), 'all_same': (True, False)})
+    assert fail.equals(bf.check_all_same(bad_same1))
 
 
 def test_check_all_same_bad_ser():
     # verifies that the all same check finds rows with all the same value
-    assert fail_series['b1'] == bf.check_all_same(bad_same1['b1'])
+    fail = pd.DataFrame.from_dict({'all_same': (True,)})
+    assert fail.equals(bf.check_all_same(bad_same1['b1']))
 
 
 def test_check_mostly_same_good_df():
     # verifies good data passes the mostly same check
-    assert not bf.check_mostly_same(good).any(axis=0)
+    assert not bf.check_mostly_same(good).loc[:, 'mostly_same'].any(axis=0)
 
 
 def test_check_mostly_same_good_ser():
     # verifies good data passes the mostly same check
-    assert not bf.check_mostly_same(good['g1'])
+    assert not bf.check_mostly_same(good['g1']).loc[:, 'mostly_same'].any()
 
 
 def test_check_mostly_same_bad1_df():
     # verifies that the mostly same check finds rows with mostly the same value
-    assert fail_series.equals(bf.check_mostly_same(bad_same2, 0.7))
+    fail = pd.DataFrame.from_dict({'column': ('b1', 'b2'), 'mostly_same': (True, False), 'thresh': (0.7, 0.7)})
+    assert fail.equals(bf.check_mostly_same(bad_same2, 0.7))
 
 
 def test_check_mostly_same_bad1_ser():
     # verifies that the mostly same check finds rows with mostly the same value
-    assert fail_series['b1'] == bf.check_mostly_same(bad_same2['b1'], 0.7)
+    fail = pd.DataFrame.from_dict({'mostly_same': (True,), 'thresh': (0.7,)})
+    assert fail.equals(bf.check_mostly_same(bad_same2['b1'], 0.7))
 
 
-def test_check_range_good_df():
+def test_check_outside_range_good_df():
     # verifies good data passes the range check
-    assert not bf.check_range(good).any(axis=0)
+    assert not bf.check_outside_range(good).loc[:, 'outside_range'].any(axis=0)
 
 
 def test_check_range_good_ser():
     # verifies good data passes the range check
-    assert not bf.check_range(good['g1']).any(axis=0)
+    assert not bf.check_outside_range(good['g1']).loc[:, 'outside_range'].any()
 
 
 def test_check_range_bad1_df():
     # verifies that the range check finds rows with low values
-    assert fail_series.equals(bf.check_range(bad_range1))
+    fail = pd.DataFrame.from_dict({'column': ('b1', 'b2'), 'outside_range': (True, False)})
+    assert fail.equals(bf.check_outside_range(bad_range1))
 
 
 def test_check_range_bad1_ser():
     # verifies that the range check finds rows with low values
-    assert fail_series['b1'] == bf.check_range(bad_range1['b1'])
+    fail = pd.DataFrame.from_dict({'outside_range': (True,)})
+    assert fail.equals(bf.check_outside_range(bad_range1['b1']))
 
 
 def test_check_range_bad2_df():
     # verifies that the range check finds rows with high values
-    assert fail_series.equals(bf.check_range(bad_range2))
+    fail = pd.DataFrame.from_dict({'column': ('b1', 'b2'), 'outside_range': (True, False)})
+    assert fail.equals(bf.check_outside_range(bad_range2))
 
 
 def test_check_range_bad2_ser():
     # verifies that the range check finds rows with high values
-    assert fail_series['b1'] == bf.check_range(bad_range2['b1'])
+    fail = pd.DataFrame.from_dict({'outside_range': (True,)})
+    assert fail.equals(bf.check_outside_range(bad_range2['b1']))
