@@ -40,7 +40,7 @@ def result_to_df(
     if isinstance(data, pd.Series):
         d = {'column': data.index, title: data.values}
     else:
-        d = {'check': (title,), 'result': (data,)}
+        d = {title: (data,)}
         if kwargs:
             kwargs = {k: (v,) for k, v in kwargs.items()}
     d.update(kwargs)

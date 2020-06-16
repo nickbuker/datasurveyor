@@ -45,8 +45,7 @@ fail_fuzzy_df = pd.DataFrame.from_dict({
     'prop_fuzzy_null': (0.25, 0.0)
 })
 fail_fuzzy_ser = pd.DataFrame.from_dict({
-    'check': ('fuzzy_nulls_present',),
-    'result': (True,),
+    'fuzzy_nulls_present': (True,),
     'fuzzy_null_count': (1,),
     'prop_fuzzy_null': (0.25,),
 })
@@ -60,7 +59,7 @@ def test_check_nulls_good_df():
 
 def test_check_nulls_good_ser():
     # verifies good data passes the null check
-    cols = ['result', 'null_count', 'prop_null']
+    cols = ['null_count', 'prop_null']
     assert not gf.check_nulls(good['g1']).loc[:, cols].any(axis=None)
 
 
@@ -78,8 +77,7 @@ def test_check_nulls_bad_df():
 def test_check_nulls_bad_ser():
     # verifies that the null check finds rows with nulls
     fail = pd.DataFrame.from_dict({
-        'check': ('nulls_present',),
-        'result': (True,),
+        'nulls_present': (True,),
         'null_count': (1,),
         'prop_null': (0.25,),
     })
@@ -94,7 +92,7 @@ def test_fuzzy_nulls_good_df():
 
 def test_fuzzy_nulls_good_ser():
     # verifies good data passes the null check
-    cols = ['result', 'fuzzy_null_count', 'prop_fuzzy_null']
+    cols = ['fuzzy_nulls_present', 'fuzzy_null_count', 'prop_fuzzy_null']
     assert not gf.check_fuzzy_nulls(good['g1']).loc[:, cols].any(axis=None)
 
 

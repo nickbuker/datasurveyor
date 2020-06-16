@@ -40,8 +40,7 @@ fail_dupe_df = pd.DataFrame.from_dict({
     'prop_dupe': (0.5, 0.0)
 })
 fail_dupe_ser = pd.DataFrame.from_dict({
-    'check': ('dupes_present',),
-    'result': (True,),
+    'dupes_present': (True,),
     'dupe_count': (2,),
     'prop_dupe': (0.5,),
 })
@@ -81,7 +80,7 @@ def test_check_uniqueness_good_df():
 
 def test_check_uniqueness_good_ser():
     # verifies that good data passes uniqueness check (bool)
-    cols = ['result', 'dupe_count', 'prop_dupe']
+    cols = ['dupes_present', 'dupe_count', 'prop_dupe']
     assert not uf.check_uniqueness(good['g1']).loc[:, cols].any(axis=None)
 
 
