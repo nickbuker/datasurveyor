@@ -28,42 +28,35 @@ def validate_categorical_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     return
 
 
-def check_all_same(
-        data: Union[pd.DataFrame, pd.Series],
-        dropna: bool = True,
-) -> Union[pd.Series, bool]:
-    """TODO
-
-    Args:
-        data:
-        dropna:
-
-    Returns:
-
-    """
-    pass
-
-
 def check_mostly_same(
         data: Union[pd.DataFrame, pd.Series],
-        dropna: bool = True,
-) -> Union[pd.Series, bool]:
+        thresh: float = 0.95,
+        dropna: bool = False,
+) -> pd.DataFrame:
     """TODO
 
     Args:
         data:
+        thresh:
         dropna:
 
     Returns:
 
     """
+    # TODO: test me!
+    utils.validate_thresh(thresh)
+    validate_categorical_dtype(data)
+    is_df = utils.check_if_df(data)
+    most_common = data.value_counts(dropna=dropna).max()
+    prop_same = most_common / data.shape[0]
+    mostly_same = prop_same >= thresh
     pass
 
 
 def check_n_categories(
         data: Union[pd.DataFrame, pd.Series],
-        dropna: bool = True,
-) -> Union[pd.Series, int]:
+        dropna: bool = False,
+) -> pd.DataFrame:
     """TODO
 
     Args:
@@ -76,6 +69,11 @@ def check_n_categories(
     validate_categorical_dtype(data)
     is_df = utils.check_if_df(data)
     if is_df:
-        return data.nunique(axis=0, dropna=dropna)
+        result = data.nunique(axis=0, dropna=dropna)
     else:
-        return data.nunique(dropna=dropna)
+        result = data.nunique(dropna=dropna)
+    return utils.result_to_df(result, title='n_categories')
+
+
+def top_n_categories():
+    pass
