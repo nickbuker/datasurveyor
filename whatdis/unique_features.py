@@ -8,7 +8,7 @@ import pandas as pd
 from whatdis import utils
 
 
-def validate_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
+def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     """Validates that unique data contains only dtype object, int, or datetime.
 
     Args:
@@ -44,8 +44,8 @@ def check_uniqueness(
         Series with index of column names and values of duplicate counts if `counts` is True, or
         bools indicating presence of duplicates if `counts` is False.
     """
+    validate_unique_dtype(data)
     # TODO: add null detection
-    validate_dtype(data)
     is_df = utils.check_if_df(data)
     if is_df:
         count_dupes = data.nunique(axis=0).subtract(data.shape[0]).multiply(-1)

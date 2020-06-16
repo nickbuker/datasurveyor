@@ -72,18 +72,17 @@ def check_mostly_same(
     Raises:
         ValueError: If `thresh` less than or equal to 0.0 or greater than or equal to 1.0.
     """
-    if thresh >= 1.0 or thresh <= 0.0:
-        raise ValueError('The thresh parameter must be greater than 0.0 and less than 1.0.')
+    utils.validate_thresh(thresh)
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
     title = 'mostly_same'
     if is_df:
-        means = data.mean(axis=0)
-        result = (means >= thresh) | (means <= 1 - thresh)
+        mean = data.mean(axis=0)
+        result = (mean >= thresh) | (mean <= 1 - thresh)
     else:
         mean = data.mean()
         result = mean >= thresh or mean <= 1 - thresh
-    return utils.result_to_df(data=result, title=title, thresh=thresh)
+    return utils.result_to_df(data=result, title=title, thresh=thresh, mean=mean)
 
 
 def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:

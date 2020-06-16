@@ -48,18 +48,18 @@ fail_dupe_ser = pd.DataFrame.from_dict({
 
 def test_validate_dtype_good_df():
     # verifies good data passes the dtype check
-    uf.validate_dtype(good)
+    uf.validate_unique_dtype(good)
 
 
 def test_validate_dtype_good_ser():
     # verifies good data passes the dtype check
-    uf.validate_dtype(good['g1'])
+    uf.validate_unique_dtype(good['g1'])
 
 
 def test_validate_dtype_bad_df():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        uf.validate_dtype(bad_type)
+        uf.validate_unique_dtype(bad_type)
     # verifies TypeError contains appropriate message
     assert 'should be of type object, int64, or datetime64' in str(excinfo.value)
 
@@ -67,7 +67,7 @@ def test_validate_dtype_bad_df():
 def test_validate_dtype_bad_ser():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        uf.validate_dtype(bad_type['b1'])
+        uf.validate_unique_dtype(bad_type['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type object, int64, or datetime64' in str(excinfo.value)
 

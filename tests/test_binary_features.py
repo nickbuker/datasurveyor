@@ -125,13 +125,22 @@ def test_check_mostly_same_good_ser():
 
 def test_check_mostly_same_bad1_df():
     # verifies that the mostly same check finds rows with mostly the same value
-    fail = pd.DataFrame.from_dict({'column': ('b1', 'b2'), 'mostly_same': (True, False), 'thresh': (0.7, 0.7)})
+    fail = pd.DataFrame.from_dict({
+        'column': ('b1', 'b2'),
+        'mostly_same': (True, False),
+        'thresh': (0.7, 0.7),
+        'mean': (0.75, 0.5),
+    })
     assert fail.equals(bf.check_mostly_same(bad_same2, 0.7))
 
 
 def test_check_mostly_same_bad1_ser():
     # verifies that the mostly same check finds rows with mostly the same value
-    fail = pd.DataFrame.from_dict({'mostly_same': (True,), 'thresh': (0.7,)})
+    fail = pd.DataFrame.from_dict({
+        'mostly_same': (True,),
+        'thresh': (0.7,),
+        'mean': (0.75,),
+    })
     assert fail.equals(bf.check_mostly_same(bad_same2['b1'], 0.7))
 
 
