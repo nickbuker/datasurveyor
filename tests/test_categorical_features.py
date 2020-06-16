@@ -12,7 +12,7 @@ good = pd.DataFrame.from_dict({
     'g2': (0, 1, 1, 0),
 })
 
-
+# used to test behavior of data with nan's
 nan = pd.DataFrame.from_dict({
     'g1': (np.nan, np.nan, 'a', 'b'),
     'g2': (0, 1, 2, 3),
@@ -26,9 +26,18 @@ bad_type = pd.DataFrame.from_dict({
 
 
 # series that should match output of check_n_categories
-good_ser = pd.Series([4, 2], index=['g1', 'g2'])
-drop_nan_ser = pd.Series([2, 4], index=['g1', 'g2'])
-nan_ser = pd.Series([3, 4], index=['g1', 'g2'])
+good_result = pd.DataFrame.from_dict({
+    'column': ('g1', 'g2'),
+    'n_categories': (4, 2)
+})
+drop_nan_result = pd.DataFrame.from_dict({
+    'column': ('g1', 'g2'),
+    'n_categories': (2, 4)
+})
+nan_result = pd.DataFrame.from_dict({
+    'column': ('g1', 'g2'),
+    'n_categories': (3, 4)
+})
 
 
 def test_validate_categorical_dtype_good_df():
@@ -59,29 +68,29 @@ def test_validate_categorical_dtype_bad_ser():
 
 def test_check_n_categories_df():
     # verifies that check_n_categories generates the expected output
-    assert good_ser.equals(cf.check_n_categories(good))
+    assert good_result.equals(cf.check_n_categories(good))
 
 
 def test_check_n_categories_ser():
     # verifies that check_n_categories generates the expected output
-    assert good_ser[1] == cf.check_n_categories(good['g2'])
+    assert good_result.loc[1, 'n_categories'] == cf.check_n_categories(good['g2']).values
 
 
 def test_check_n_categories_dropna_df():
     # verifies that check_n_categories generates the expected output with nulls
-    assert drop_nan_ser.equals(cf.check_n_categories(nan, dropna=True))
+    assert drop_nan_result.equals(cf.check_n_categories(nan, dropna=True))
 
 
 def test_check_n_categories_no_dropna_df():
     # verifies that check_n_categories generates the expected output with nulls
-    assert nan_ser.equals(cf.check_n_categories(nan, dropna=False))
+    assert nan_result.equals(cf.check_n_categories(nan, dropna=False))
 
 
 def test_check_n_categories_dropna_ser():
     # verifies that check_n_categories generates the expected output with nulls
-    assert drop_nan_ser[0] == cf.check_n_categories(nan['g1'], dropna=True)
+    assert drop_nan_result.loc[0, 'n_categories'] == cf.check_n_categories(nan['g1'], dropna=True).values
 
 
 def test_check_n_categories_no_dropna_ser():
     # verifies that check_n_categories generates the expected output with nulls
-    assert nan_ser[0] == cf.check_n_categories(nan['g1'], dropna=False)
+    assert nan_result.loc[0, 'n_categories'] == cf.check_n_categories(nan['g1'], dropna=False).values
