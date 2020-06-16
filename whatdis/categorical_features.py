@@ -47,10 +47,25 @@ def check_mostly_same(
     utils.validate_thresh(thresh)
     validate_categorical_dtype(data)
     is_df = utils.check_if_df(data)
-    most_common = data.value_counts(dropna=dropna).max()
-    prop_same = most_common / data.shape[0]
-    mostly_same = prop_same >= thresh
-    pass
+    if is_df:
+        most_common = data.mode(axis=0, dropna=dropna).loc[0, :]
+        count_common = data.eq(most_common).sum(axis=0)
+        prop_common = count_common.divide(data.shape[0])
+        mostly_same = prop_common.ge(thresh)
+    else:
+        most_common = data.mode()[0]
+        count_common = data.eq(most_common).sum()
+        prop_common = count_common / data.shape[0]
+        mostly_same = prop_common >= thresh
+    result = utils.result_to_df(
+        mostly_same,
+        title='mostly_same',
+        thresh=thresh,
+        most_common=most_common,
+        count=count_common,
+        prop=prop_common,
+    )
+    return result
 
 
 def check_n_categories(
@@ -75,5 +90,9 @@ def check_n_categories(
     return utils.result_to_df(result, title='n_categories')
 
 
-def top_n_categories():
-    pass
+if __name__ == '__main__':
+    good = pd.DataFrame.from_dict({
+        'g1': ('a', 'b', 'c', 'd'),
+        'g2': (0, 1, 1, 0),
+    })
+    print(check_mostly_same(data=good))
