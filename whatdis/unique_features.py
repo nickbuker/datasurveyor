@@ -1,3 +1,4 @@
+# TODO: docstrings
 # standard library imports
 from typing import Union
 # third party imports
@@ -33,26 +34,31 @@ def validate_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
 
 def check_uniqueness(
         data: Union[pd.DataFrame, pd.Series],
-        counts: bool = False
-) -> Union[pd.Series, bool, int]:
+) -> pd.DataFrame:
     """Checks if data contains columns with duplicates.
 
     Args:
         data: Data to be checked for duplicates.
-        counts: If True, returns counts of duplicates, if False, returns boolean indicators of duplicates.
 
     Returns: TODO
         Series with index of column names and values of duplicate counts if `counts` is True, or
         bools indicating presence of duplicates if `counts` is False.
     """
+    # TODO: add null detection
     validate_dtype(data)
     is_df = utils.check_if_df(data)
     if is_df:
-        dupes = data.nunique(axis=0).subtract(data.shape[0]).multiply(-1)
-        if not counts:
-            dupes = dupes.astype(bool)
+        count_dupes = data.nunique(axis=0).subtract(data.shape[0]).multiply(-1)
+        is_dupes = count_dupes.astype(bool)
+        prop_dupes = count_dupes.divide(data.shape[0])
     else:
-        dupes = data.shape[0] - data.nunique()
-        if not counts:
-            dupes = bool(dupes)
-    return dupes
+        count_dupes = data.shape[0] - data.nunique()
+        is_dupes = bool(count_dupes)
+        prop_dupes = count_dupes / data.shape[0]
+    result = utils.result_to_df(
+        data=is_dupes,
+        title='dupes_present',
+        dupe_count=count_dupes,
+        prop_dupe=prop_dupes
+    )
+    return result
