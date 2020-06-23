@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 # local imports
-import surveyor.general_features as gf
+import surveyor._general_features as gf
 
 
 # should pass all checks

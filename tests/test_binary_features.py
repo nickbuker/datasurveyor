@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 # local imports
-import surveyor.binary_features as bf
+import surveyor._binary_features as bf
 
 
 # should pass all checks

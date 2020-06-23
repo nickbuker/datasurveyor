@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 # local imports
-from surveyor import utils
+from surveyor import _utils
 
 
 def validate_categorical_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
@@ -19,7 +19,7 @@ def validate_categorical_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     Raises:
         TypeError: If `data` contains dtype other than bool or object (str).
     """
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     err_message = 'Unique feature columns should be of type object or int64.'
     types = (np.dtype('O'), np.dtype(int))
     if is_df:
@@ -48,9 +48,9 @@ def check_mostly_same(
         value of threshold used to determine if mostly same, the most common category, the
         count of the most common category, and the proportion of the most common category.
     """
-    utils.validate_thresh(thresh)
+    _utils.validate_thresh(thresh)
     validate_categorical_dtype(data)
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     if is_df:
         most_common = data.mode(axis=0, dropna=dropna).loc[0, :]
         count_common = data.eq(most_common).sum(axis=0)
@@ -61,7 +61,7 @@ def check_mostly_same(
         count_common = data.eq(most_common).sum()
         prop_common = count_common / data.shape[0]
         mostly_same = prop_common >= thresh
-    result = utils.result_to_df(
+    result = _utils.result_to_df(
         mostly_same,
         title='mostly_same',
         thresh=thresh,
@@ -86,9 +86,9 @@ def check_n_categories(
         DataFrame with count(s) of categories.
     """
     validate_categorical_dtype(data)
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     if is_df:
         result = data.nunique(axis=0, dropna=dropna)
     else:
         result = data.nunique(dropna=dropna)
-    return utils.result_to_df(result, title='n_categories')
+    return _utils.result_to_df(result, title='n_categories')

@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 # local imports
-from surveyor import utils
+from surveyor import _utils
 
 
 def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
@@ -19,7 +19,7 @@ def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     Raises:
         TypeError: If `data` contains dtype other than object, int, or datetime.
     """
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     err_message = 'Unique feature columns should be of type object, int64, or datetime64.'
     types = (np.dtype('O'), np.dtype(int), np.dtype('datetime64[ns]'))
     if is_df:
@@ -47,7 +47,7 @@ def check_uniqueness(
         ValueError: If unique data contains nulls.
     """
     validate_unique_dtype(data)
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     err_message = 'Columns with unique data should not contain nulls.'
     if is_df:
         if data.isna().any(axis=None):
@@ -61,7 +61,7 @@ def check_uniqueness(
         count_dupes = data.shape[0] - data.nunique()
         is_dupes = bool(count_dupes)
         prop_dupes = count_dupes / data.shape[0]
-    result = utils.result_to_df(
+    result = _utils.result_to_df(
         data=is_dupes,
         title='dupes_present',
         dupe_count=count_dupes,

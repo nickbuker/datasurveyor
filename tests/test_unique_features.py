@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # local imports
-import surveyor.unique_features as uf
+import surveyor._unique_features as uf
 
 
 # should pass all checks

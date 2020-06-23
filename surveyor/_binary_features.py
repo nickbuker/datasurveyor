@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 # local imports
-from surveyor import utils
+from surveyor import _utils
 
 
 def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
@@ -19,7 +19,7 @@ def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     Raises:
         TypeError: If `data` contains dtype other than bool or int.
     """
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     err_message = 'Binary feature columns should be of type bool or int64.'
     types = (np.dtype(bool), np.dtype(int))
     if is_df:
@@ -40,13 +40,13 @@ def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.DataFrame]:
     Returns:
         DataFrame with bool(s) indicating if data contains all the same value.
     """
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     validate_binary_dtype(data)
     if is_df:
         result = data.min(axis=0).eq(data.max(axis=0))
     else:
         result = data.min() == data.max()
-    return utils.result_to_df(result, title='all_same')
+    return _utils.result_to_df(result, title='all_same')
 
 
 def check_mostly_same(
@@ -66,8 +66,8 @@ def check_mostly_same(
     Raises:
         ValueError: If `thresh` less than or equal to 0.0 or greater than or equal to 1.0.
     """
-    utils.validate_thresh(thresh)
-    is_df = utils.check_if_df(data)
+    _utils.validate_thresh(thresh)
+    is_df = _utils.check_if_df(data)
     validate_binary_dtype(data)
     if is_df:
         mean = data.mean(axis=0)
@@ -75,7 +75,7 @@ def check_mostly_same(
     else:
         mean = data.mean()
         result = mean >= thresh or mean <= 1 - thresh
-    return utils.result_to_df(data=result, title='mostly_same', thresh=thresh, mean=mean)
+    return _utils.result_to_df(data=result, title='mostly_same', thresh=thresh, mean=mean)
 
 
 def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
@@ -87,10 +87,10 @@ def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
     Returns:
         DataFrame with bool(s) indicating if data contains any values outside of the expected range.
     """
-    is_df = utils.check_if_df(data)
+    is_df = _utils.check_if_df(data)
     validate_binary_dtype(data)
     if is_df:
         result = (data.min(axis=0) < 0) | (data.max(axis=0) > 1)
     else:
         result = data.min() < 0 or data.max() > 1
-    return utils.result_to_df(data=result, title='outside_range')
+    return _utils.result_to_df(data=result, title='outside_range')

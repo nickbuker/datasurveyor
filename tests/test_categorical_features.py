@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # local imports
-from surveyor import categorical_features as cf
+from surveyor import _categorical_features as cf
 
 
 # should pass all checks
