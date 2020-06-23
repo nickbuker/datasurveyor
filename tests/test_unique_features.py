@@ -26,7 +26,7 @@ bad_unique = pd.DataFrame.from_dict({
     'b2': ('foo', 'bar', 'baz', 'boo'),
 })
 
-# should fail duplicates test with dropna=False
+# should raise ValueError
 bad_unique_nan = pd.DataFrame.from_dict({
     'b1': ('foo', 'bar', 'baz', np.nan),
     'b2': (0, 1, 2, 3),
@@ -70,6 +70,22 @@ def test_validate_dtype_bad_ser():
         uf.validate_unique_dtype(bad_type['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type object, int64, or datetime64' in str(excinfo.value)
+
+
+def test_detect_nan_df():
+    # checks that TypeError is raised when df contains object (str) data
+    with pytest.raises(ValueError) as excinfo:
+        uf.check_uniqueness(bad_unique_nan)
+    # verifies TypeError contains appropriate message
+    assert 'should not contain nulls' in str(excinfo.value)
+
+
+def test_detect_nan_ser():
+    # checks that TypeError is raised when df contains object (str) data
+    with pytest.raises(ValueError) as excinfo:
+        uf.check_uniqueness(bad_unique_nan['b1'])
+    # verifies TypeError contains appropriate message
+    assert 'should not contain nulls' in str(excinfo.value)
 
 
 def test_check_uniqueness_good_df():

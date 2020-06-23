@@ -8,7 +8,7 @@ from whatdis import utils
 
 
 def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
-    """Validates if binary data contains only dtype bool or int.
+    """Validates that binary data contains only dtype bool or int.
 
     Args:
         data: Binary data to be type validated.
@@ -32,7 +32,7 @@ def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
 
 
 def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.DataFrame]:
-    """Checks if binary data contains columns where all values are the same.
+    """Checks if binary data contains all the same value.
 
     Args:
         data: Binary data to be checked if all values are the same.
@@ -53,7 +53,7 @@ def check_mostly_same(
         data: Union[pd.DataFrame, pd.Series],
         thresh: float = 0.95,
 ) -> pd.DataFrame:
-    """Checks if binary data contains columns where almost all values are the same.
+    """Checks if binary data contains almost all the same value.
 
     Args:
         data: Binary data to be checked if almost all values are the same.

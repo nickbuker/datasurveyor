@@ -1,4 +1,3 @@
-# TODO: docstrings
 # standard library imports
 from typing import Union
 # third party imports
@@ -17,8 +16,8 @@ def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
     Returns:
         None
 
-    Raises: TODO
-        TypeError: If `df` contains dtype other than object, int, or datetime.
+    Raises:
+        TypeError: If `data` contains dtype other than object, int, or datetime.
     """
     is_df = utils.check_if_df(data)
     err_message = 'Unique feature columns should be of type object, int64, or datetime64.'
@@ -35,23 +34,30 @@ def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
 def check_uniqueness(
         data: Union[pd.DataFrame, pd.Series],
 ) -> pd.DataFrame:
-    """Checks if data contains columns with duplicates.
+    """Checks if unique data contains columns with duplicates.
 
     Args:
         data: Data to be checked for duplicates.
 
-    Returns: TODO
-        Series with index of column names and values of duplicate counts if `counts` is True, or
-        bools indicating presence of duplicates if `counts` is False.
+    Returns:
+        DataFrame with bool(s) indicating if data contains duplicates, the count of
+        duplicates present, and the proportion of duplicates.
+
+    Raises:
+        ValueError: If unique data contains nulls.
     """
     validate_unique_dtype(data)
-    # TODO: add null detection
     is_df = utils.check_if_df(data)
+    err_message = 'Columns with unique data should not contain nulls.'
     if is_df:
+        if data.isna().any(axis=None):
+            raise ValueError(err_message)
         count_dupes = data.nunique(axis=0).subtract(data.shape[0]).multiply(-1)
         is_dupes = count_dupes.astype(bool)
         prop_dupes = count_dupes.divide(data.shape[0])
     else:
+        if data.isna().any():
+            raise ValueError(err_message)
         count_dupes = data.shape[0] - data.nunique()
         is_dupes = bool(count_dupes)
         prop_dupes = count_dupes / data.shape[0]
