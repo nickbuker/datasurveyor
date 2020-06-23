@@ -8,13 +8,16 @@ from whatdis import utils
 
 
 def validate_categorical_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
-    """TODO
+    """Validates that categorical data contains only dtype int or object (str).
 
     Args:
-        data:
+        data: Categorical data to be type validated.
 
     Returns:
+        None
 
+    Raises:
+        TypeError: If `data` contains dtype other than bool or object (str).
     """
     is_df = utils.check_if_df(data)
     err_message = 'Unique feature columns should be of type object or int64.'
@@ -33,17 +36,18 @@ def check_mostly_same(
         thresh: float = 0.95,
         dropna: bool = False,
 ) -> pd.DataFrame:
-    """TODO
+    """Checks if categorical data contains almost all the same category.
 
     Args:
-        data:
-        thresh:
-        dropna:
+        data: Categorical data to be checked if almost all the same category.
+        thresh: Threshold for what proportion of data must be the same category to fail check.
+        dropna: If True: ignores nulls, if False: counts nulls as a category.
 
     Returns:
-
+        DataFrame with bool(s) indicating if data contains almost all the same category, the
+        value of threshold used to determine if mostly same, the most common category, the
+        count of the most common category, and the proportion of the most common category.
     """
-    # TODO: test me!
     utils.validate_thresh(thresh)
     validate_categorical_dtype(data)
     is_df = utils.check_if_df(data)
@@ -72,14 +76,14 @@ def check_n_categories(
         data: Union[pd.DataFrame, pd.Series],
         dropna: bool = False,
 ) -> pd.DataFrame:
-    """TODO
+    """Counts the number of categories.
 
     Args:
-        data:
-        dropna:
+        data: Data to count categories for.
+        dropna: If True: ignores nulls, if False: counts nulls as a category.
 
     Returns:
-
+        DataFrame with count(s) of categories.
     """
     validate_categorical_dtype(data)
     is_df = utils.check_if_df(data)
