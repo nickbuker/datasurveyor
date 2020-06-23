@@ -1,4 +1,3 @@
-# TODO: update docstrings
 # standard library imports
 from typing import List, Optional, Union
 # third party imports
@@ -8,14 +7,14 @@ from whatdis import utils
 
 
 def check_nulls(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
-    """Checks if data contains columns with nulls.
+    """Checks if data contains nulls.
 
     Args:
         data: Data to be checked for nulls.
 
     Returns:
-        Series with index of column names and values null counts if `counts` is True, or bools indicating
-        presence of nulls if `counts` is False.
+        DataFrame with bool(s) indicating if data contains any nulls, count of the nulls
+        present, and the proportion of nulls.
     """
     is_df = utils.check_if_df(data)
     is_nulls = data.isna().any(axis=0)
@@ -37,15 +36,15 @@ def check_fuzzy_nulls(
         data: Union[pd.DataFrame, pd.Series],
         add_fuzzy_nulls: Optional[List] = None,
 ) -> pd.DataFrame:
-    """Checks if DataFrame contains columns with fuzzy nulls.
+    """Checks if DataFrame contains values commonly used to denote nulls (fuzzy nulls).
 
     Args:
         data: Data to be checked for fuzzy nulls.
         add_fuzzy_nulls: Additional items to check as fuzzy nulls.
 
     Returns:
-        Series with index of column names and values fuzzy null counts if `counts` is True, or bools
-        indicating presence of fuzzy nulls if `counts` is False.
+        DataFrame with bool(s) indicating if data contains any fuzzy nulls, count of
+        the fuzzy nulls present, and the proportion of fuzzy nulls.
     """
     is_df = utils.check_if_df(data)
     fuzzy_nulls = ['null', 'Null', 'NULL', '', ' ']
@@ -64,13 +63,3 @@ def check_fuzzy_nulls(
         prop_fuzzy_null=prop_fuzzy_nulls,
     )
     return result
-
-
-if __name__ == '__main__':
-    good = pd.DataFrame.from_dict({
-        'g1': (True, False, True, False),
-        'g2': (0, 1, 0, 1),
-        'g3': (False, True, False, True),
-    })
-
-    print(check_fuzzy_nulls(good['g1']))
