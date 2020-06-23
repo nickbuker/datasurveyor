@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 # local imports
-import whatdis.general_features as gf
+import surveyor.general_features as gf
 
 
 # should pass all checks
