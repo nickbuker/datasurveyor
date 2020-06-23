@@ -1,4 +1,3 @@
-# TODO update docstrings
 # standard library imports
 from typing import Union
 # third party imports
@@ -18,7 +17,7 @@ def validate_binary_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:
         None
 
     Raises:
-        TypeError: If `data` contains dtype other than bool or int
+        TypeError: If `data` contains dtype other than bool or int.
     """
     is_df = utils.check_if_df(data)
     err_message = 'Binary feature columns should be of type bool or int64.'
@@ -39,17 +38,15 @@ def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.DataFrame]:
         data: Binary data to be checked if all values are the same.
 
     Returns:
-        If `data` is a DataFrame, returns a Series with index of column names and values of bools
-        indicating if all values are the same. If `data` is a Series, returns a bool indicating
-        if all values are the same.
+        DataFrame with bool(s) indicating if data contains all the same value.
     """
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
-    title = 'all_same'
     if is_df:
-        return utils.result_to_df(data.min(axis=0).eq(data.max(axis=0)), title=title)
+        result = data.min(axis=0).eq(data.max(axis=0))
     else:
-        return utils.result_to_df(data.min() == data.max(), title=title)
+        result = data.min() == data.max()
+    return utils.result_to_df(result, title='all_same')
 
 
 def check_mostly_same(
@@ -63,11 +60,8 @@ def check_mostly_same(
         thresh: Threshold for what proportion of data must be the same to fail check.
 
     Returns:
-        Series with index of column names and values of bools indicating if almost all values are the same.
-
-        If `data` is a DataFrame, returns a Series with index of column names and values of bools
-        indicating if almost all values are the same. If `data` is a Series, returns a bool
-        indicating if almost all values are the same.
+        DataFrame with bool(s) indicating if data contains all the same value, the
+        value of threshold used to determine if mostly same, and the average value(s).
 
     Raises:
         ValueError: If `thresh` less than or equal to 0.0 or greater than or equal to 1.0.
@@ -75,14 +69,13 @@ def check_mostly_same(
     utils.validate_thresh(thresh)
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
-    title = 'mostly_same'
     if is_df:
         mean = data.mean(axis=0)
         result = (mean >= thresh) | (mean <= 1 - thresh)
     else:
         mean = data.mean()
         result = mean >= thresh or mean <= 1 - thresh
-    return utils.result_to_df(data=result, title=title, thresh=thresh, mean=mean)
+    return utils.result_to_df(data=result, title='mostly_same', thresh=thresh, mean=mean)
 
 
 def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
@@ -92,15 +85,12 @@ def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
         data: Binary data to be checked if any values are less than 0 or greater than 1.
 
     Returns:
-        If `data` is a DataFrame, returns a Series with index of column names and values of bools
-        indicating if the min or max values out of range. If `data` is a Series, returns a bool
-        indicating min or max values are out of range.
+        DataFrame with bool(s) indicating if data contains any values outside of the expected range.
     """
     is_df = utils.check_if_df(data)
     validate_binary_dtype(data)
-    title = 'outside_range'
     if is_df:
         result = (data.min(axis=0) < 0) | (data.max(axis=0) > 1)
     else:
         result = data.min() < 0 or data.max() > 1
-    return utils.result_to_df(data=result, title=title)
+    return utils.result_to_df(data=result, title='outside_range')
