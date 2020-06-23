@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 # local imports
-from whatdis import utils
+from surveyor import utils
 
 
 def validate_unique_dtype(data: Union[pd.DataFrame, pd.Series]) -> None:

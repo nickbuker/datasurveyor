@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 # third party imports
 import pandas as pd
 # local imports
-from whatdis import utils
+from surveyor import utils
 
 
 def check_nulls(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
