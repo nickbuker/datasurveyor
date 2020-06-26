@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # local imports
-from surveyor import categorical_features as cf
+from surveyor import CategoricalFeatures as cf
 
 
 # should pass all checks
@@ -23,7 +23,6 @@ bad_type = pd.DataFrame.from_dict({
     'b1': (True, True, False, True),
     'b2': (1.0, 0.0, 1.0, 0.0),
 })
-
 
 # DataFrames that should match output of check_n_categories
 mostly_same_out1 = pd.DataFrame.from_dict({
@@ -58,18 +57,18 @@ nan_result = pd.DataFrame.from_dict({
 
 def test_validate_categorical_dtype_good_df():
     # verifies good data passes the dtype check
-    cf.validate_categorical_dtype(good)
+    cf._validate_categorical_dtype(good)
 
 
 def test_validate_categorical_dtype_good_ser():
     # verifies good data passes the dtype check
-    cf.validate_categorical_dtype(good['g1'])
+    cf._validate_categorical_dtype(good['g1'])
 
 
 def test_validate_categorical_dtype_bad_df():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        cf.validate_categorical_dtype(bad_type)
+        cf._validate_categorical_dtype(bad_type)
     # verifies TypeError contains appropriate message
     assert 'should be of type object or int64' in str(excinfo.value)
 
@@ -77,7 +76,7 @@ def test_validate_categorical_dtype_bad_df():
 def test_validate_categorical_dtype_bad_ser():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        cf.validate_categorical_dtype(bad_type['b1'])
+        cf._validate_categorical_dtype(bad_type['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type object or int64' in str(excinfo.value)
 
