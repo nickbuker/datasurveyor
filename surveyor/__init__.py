@@ -4,13 +4,13 @@ __version__ = '0.0.0'
 
 
 # Binary feature checks
-from surveyor._binary_features import check_all_same, check_mostly_same, check_outside_range
+from surveyor._binary_features import BinaryFeatures
 # Categorical feature checks
-from surveyor._categorical_features import check_mostly_same, check_n_categories
+from surveyor._categorical_features import CategoricalFeatures
 # General feature checks
-from surveyor._general_features import check_fuzzy_nulls, check_nulls
+from surveyor._general_features import GeneralFeatures
 # Unique feature checks
-from surveyor._unique_features import check_uniqueness
+from surveyor._unique_features import UniqueFeatures
 
 
 __all__ = [_binary_features, _categorical_features, _general_features, _unique_features]

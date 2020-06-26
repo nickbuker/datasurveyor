@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 # local imports
-import surveyor._binary_features as bf
+from surveyor import BinaryFeatures as bf
 
 
 # should pass all checks
@@ -51,18 +51,18 @@ bad_range2 = pd.DataFrame.from_dict({
 
 def test_validate_dtype_good_df():
     # verifies good data passes the dtype check
-    bf.validate_binary_dtype(good)
+    bf._validate_binary_dtype(good)
 
 
 def test_validate_dtype_good_ser():
     # verifies good data passes the dtype check
-    bf.validate_binary_dtype(good['g1'])
+    bf._validate_binary_dtype(good['g1'])
 
 
 def test_validate_dtype_bad_str_df():
     # checks that TypeError is raised when df contains object (str) data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_binary_dtype(bad_type1)
+        bf._validate_binary_dtype(bad_type1)
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
@@ -70,7 +70,7 @@ def test_validate_dtype_bad_str_df():
 def test_validate_dtype_bad_str_ser():
     # checks that TypeError is raised when series contains object (str) data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_binary_dtype(bad_type1['b1'])
+        bf._validate_binary_dtype(bad_type1['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
@@ -78,7 +78,7 @@ def test_validate_dtype_bad_str_ser():
 def test_validate_dtype_bad_float_df():
     # checks that TypeError is raised when df contains float data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_binary_dtype(bad_type2)
+        bf._validate_binary_dtype(bad_type2)
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
@@ -86,7 +86,7 @@ def test_validate_dtype_bad_float_df():
 def test_validate_dtype_bad_float_ser():
     # checks that TypeError is raised when series contains float data
     with pytest.raises(TypeError) as excinfo:
-        bf.validate_binary_dtype(bad_type2['b1'])
+        bf._validate_binary_dtype(bad_type2['b1'])
     # verifies TypeError contains appropriate message
     assert 'should be of type bool or int64' in str(excinfo.value)
 
