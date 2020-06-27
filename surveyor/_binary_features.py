@@ -36,7 +36,7 @@ class BinaryFeatures:
     @staticmethod
     def check_all_same(data: Union[pd.DataFrame, pd.Series]) -> Union[pd.DataFrame]:
         """Checks if binary data contains all the same value.
-            TODO: series return int in for all_same
+
         Args:
             data: Binary data to be checked if all values are the same.
 
@@ -83,8 +83,6 @@ class BinaryFeatures:
     @staticmethod
     def check_outside_range(data: Union[pd.DataFrame, pd.Series]) -> pd.DataFrame:
         """Checks if binary data contains columns where min is less than 0 or max is greater than 1.
-
-        TODO: series return int in for outside_range
 
         Args:
             data: Binary data to be checked if any values are less than 0 or greater than 1.
