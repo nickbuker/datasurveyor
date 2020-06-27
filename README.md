@@ -24,6 +24,7 @@ Surveyor can be install via pip. As always, use of a project-level virtual envir
 
  **Surveyor requires Python >= 3.6.**
 
+# TODO: not yet deployed to PyPI
 ```bash
 $ pip install surveyor
 ```
@@ -42,7 +43,7 @@ $ pip install surveyor
 |  4 |    5 | Hanna   | WA      | True       |       1 |      12 |
 |  5 |    6 | Susan   | Null    | False      |       0 |       0 |
 |  6 |    7 | Quentin | WA      | True       |       1 |     nan |
-|  7 |    8 | Caitlyn | ID      | True       |       0 |       8 |
+|  7 |    8 | Caitlyn | unknown | True       |       0 |       8 |
 |  8 |    9 | Matt    | WA      | True       |       1 |      50 |
 |  9 |   10 | Nick    | WA      | True       |       0 |     -10 |
 
@@ -61,7 +62,6 @@ BF.check_all_same(df['app_inst'])
 |---:|:-----------|
 |  0 | False      |
 
-
 ```python
 BF.check_all_same(df[['app_inst', 'lylty']])
 ```
@@ -70,7 +70,6 @@ BF.check_all_same(df[['app_inst', 'lylty']])
 |---:|:---------|:-----------|
 |  0 | app_inst | False      |
 |  1 | lylty    | False      |
-
 
 ```python
 BF.check_mostly_same(df['app_inst'])
@@ -87,7 +86,6 @@ BF.check_mostly_same(df['app_inst'], thresh=0.7)
 |    | mostly_same   |   thresh |   mean |
 |---:|:--------------|---------:|-------:|
 |  0 | True          |      0.7 |    0.8 |
-
 
 ```python
 BF.check_mostly_same(df[['app_inst', 'lylty']])
@@ -115,7 +113,6 @@ BF.check_outside_range(df['app_inst'])
 |---:|:----------------|
 |  0 | False           |
 
-
 ```python
 BF.check_outside_range(df[['app_inst', 'lylty']])
 ```
@@ -126,10 +123,130 @@ BF.check_outside_range(df[['app_inst', 'lylty']])
 |  1 | lylty    | False           |
 
 ### Categorical Features
-TODO
+```python
+from surveyor import CategoricalFeatures as CF
+```
+
+```python
+CF.check_mostly_same(df['state'])
+```
+
+|    | mostly_same   |   thresh | most_common   |   count |   prop |
+|---:|:--------------|---------:|:--------------|--------:|-------:|
+|  0 | False         |     0.95 | WA            |       6 |    0.6 |
+
+```python
+CF.check_mostly_same(df['state'], thresh=0.6)
+```
+
+|    | mostly_same   |   thresh | most_common   |   count |   prop |
+|---:|:--------------|---------:|:--------------|--------:|-------:|
+|  0 | True          |      0.6 | WA            |       6 |    0.6 |
+
+```python
+CF.check_mostly_same(df[['state', 'platform']])
+```
+
+|    | column   | mostly_same   |   thresh | most_common   |   count |   prop |
+|---:|:---------|:--------------|---------:|:--------------|--------:|-------:|
+|  0 | state    | False         |     0.95 | WA            |       6 |    0.6 |
+|  1 | platform | False         |     0.95 | ios           |       5 |    0.5 |
+
+```python
+CF.check_mostly_same(df[['state', 'platform']], thresh=0.6)
+```
+
+|    | column   | mostly_same   |   thresh | most_common   |   count |   prop |
+|---:|:---------|:--------------|---------:|:--------------|--------:|-------:|
+|  0 | state    | True          |      0.6 | WA            |       6 |    0.6 |
+|  1 | platform | False         |      0.6 | ios           |       5 |    0.5 |
+
+```python
+CF.check_n_categories(df['state'])
+```
+
+|    |   n_categories |
+|---:|---------------:|
+|  0 |              4 |
+
+```python
+CF.check_n_categories(df[['state', 'platform']])
+```
+
+|    | column   |   n_categories |
+|---:|:---------|---------------:|
+|  0 | state    |              4 |
+|  1 | platform |              3 |
 
 ### General Features
-TODO
+```python
+from surveyor import GeneralFeatures as GF
+```
+
+```python
+GF.check_fuzzy_nulls(df['state'])
+```
+
+|    | fuzzy_nulls_present   |   fuzzy_null_count |   prop_fuzzy_null |
+|---:|:----------------------|-------------------:|------------------:|
+|  0 | True                  |                  1 |               0.1 |
+
+```python
+GF.check_fuzzy_nulls(df['state'], add_fuzzy_nulls=['unknown'])
+```
+|    | fuzzy_nulls_present   |   fuzzy_null_count |   prop_fuzzy_null |
+|---:|:----------------------|-------------------:|------------------:|
+|  0 | True                  |                  2 |               0.2 |
+
+```python
+GF.check_fuzzy_nulls(df)
+```
+
+|    | column   | fuzzy_nulls_present   |   fuzzy_null_count |   prop_fuzzy_null |
+|---:|:---------|:----------------------|-------------------:|------------------:|
+|  0 | id       | False                 |                  0 |               0   |
+|  1 | name     | False                 |                  0 |               0   |
+|  2 | state    | True                  |                  1 |               0.1 |
+|  3 | platform | False                 |                  0 |               0   |
+|  4 | app_inst | False                 |                  0 |               0   |
+|  5 | lylty    | False                 |                  0 |               0   |
+|  6 | spend    | False                 |                  0 |               0   |
+
+```python
+GF.check_fuzzy_nulls(df, add_fuzzy_nulls=['unknown'])
+```
+
+|    | column   | fuzzy_nulls_present   |   fuzzy_null_count |   prop_fuzzy_null |
+|---:|:---------|:----------------------|-------------------:|------------------:|
+|  0 | id       | False                 |                  0 |               0   |
+|  1 | name     | False                 |                  0 |               0   |
+|  2 | state    | True                  |                  2 |               0.2 |
+|  3 | platform | False                 |                  0 |               0   |
+|  4 | app_inst | False                 |                  0 |               0   |
+|  5 | lylty    | False                 |                  0 |               0   |
+|  6 | spend    | False                 |                  0 |               0   |
+
+```python
+GF.check_nulls(df['spend'])
+```
+
+|    | nulls_present   |   null_count |   prop_null |
+|---:|:----------------|-------------:|------------:|
+|  0 | True            |            2 |         0.2 |
+
+```python
+GF.check_nulls(df)
+```
+
+|    | column   | nulls_present   |   null_count |   prop_null |
+|---:|:---------|:----------------|-------------:|------------:|
+|  0 | id       | False           |            0 |         0   |
+|  1 | name     | False           |            0 |         0   |
+|  2 | state    | False           |            0 |         0   |
+|  3 | platform | False           |            0 |         0   |
+|  4 | app_inst | False           |            0 |         0   |
+|  5 | lylty    | False           |            0 |         0   |
+|  6 | spend    | True            |            2 |         0.2 |
 
 ### Unique Features
 ```python
