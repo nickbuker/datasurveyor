@@ -65,14 +65,14 @@ A data dictionary for `df` is below.
 Surveyor expects binary features to have two possible values and to be stored as bools or integers (with values of 0 or 1). In the example data, `app_inst` and `lylty` are binary features.
 
 #### Importing BinaryFeatures
-The binary feature tools from surveyor can be imported with the command below.
+The binary feature tools can be imported with the command below.
 
 ```python
 from surveyor import BinaryFeatures as BF
 ```
 
 #### Checking of all values the same
-
+The `check_all_same` method can be used to check if binary features contain exclusively the same value. This method can be applied to a single binary feature or a collection of binary features.
 
 ```python
 BF.check_all_same(df['app_inst'])
@@ -91,6 +91,9 @@ BF.check_all_same(df[['app_inst', 'lylty']])
 |  0 | app_inst | False      |
 |  1 | lylty    | False      |
 
+#### Checking if values are mostly the same
+The `check_mostly_same` method can be used to check if binary features contain mostly the same value (default threshold 95%). This method can be applied to a single binary feature or a collection of binary features.
+
 ```python
 BF.check_mostly_same(df['app_inst'])
 ```
@@ -98,14 +101,6 @@ BF.check_mostly_same(df['app_inst'])
 |    | mostly_same   |   thresh |   mean |
 |---:|:--------------|---------:|-------:|
 |  0 | False         |     0.95 |    0.8 |
-
-```python
-BF.check_mostly_same(df['app_inst'], thresh=0.7)
-```
-
-|    | mostly_same   |   thresh |   mean |
-|---:|:--------------|---------:|-------:|
-|  0 | True          |      0.7 |    0.8 |
 
 ```python
 BF.check_mostly_same(df[['app_inst', 'lylty']])
@@ -116,6 +111,16 @@ BF.check_mostly_same(df[['app_inst', 'lylty']])
 |  0 | app_inst | False         |     0.95 |    0.8 |
 |  1 | lylty    | False         |     0.95 |    0.5 |
 
+The user can specify whatever threshold is appropriate for their usecase. If `thresh=0.7`, the method will flag features with at least 70% the same value.
+
+```python
+BF.check_mostly_same(df['app_inst'], thresh=0.7)
+```
+
+|    | mostly_same   |   thresh |   mean |
+|---:|:--------------|---------:|-------:|
+|  0 | True          |      0.7 |    0.8 |
+
 ```python
 BF.check_mostly_same(df[['app_inst', 'lylty']], thresh=0.7)
 ```
@@ -124,6 +129,9 @@ BF.check_mostly_same(df[['app_inst', 'lylty']], thresh=0.7)
 |---:|:---------|:--------------|---------:|-------:|
 |  0 | app_inst | True          |      0.7 |    0.8 |
 |  1 | lylty    | False         |      0.7 |    0.5 |
+
+#### Checking the range
+The `check_outside_range` method can be used to detect features with data outside the expected range of 0 and 1. Note that the outside of range condition is only possible for binary features encoded as integer data type, but the method is able to check any binary feature regardless of data type.
 
 ```python
 BF.check_outside_range(df['app_inst'])
