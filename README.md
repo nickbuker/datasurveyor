@@ -32,7 +32,7 @@ $ pip install surveyor
 <a name="using-surveyor"></a>
 ## Using Surveyor:
 
-`df`
+To demonstrate the tools available in surveyor, let's use a Pandas DataFrame named `df`.
 
 |    |   id | name    | state   | app_inst   |   lylty |   spend |
 |---:|-----:|:--------|:--------|:-----------|--------:|--------:|
@@ -47,12 +47,32 @@ $ pip install surveyor
 |  8 |    9 | Matt    | WA      | True       |       1 |      50 |
 |  9 |   10 | Nick    | WA      | True       |       0 |     -10 |
 
+A data dictionary for `df` is below.
 
+| column   | dtype   | description                |
+|:---------|:--------|:---------------------------|
+| id       | int64   | unique customer identifier |
+| name     | object  | customer name              |
+| state    | object  | state of residence         |
+| platform | object  | system platform            |
+| app_inst | bool    | app installation flag      |
+| lylty    | int64   | loyalty program flag       |
+| spend    | float64 | total customer spend       |
 
-### Binary Features
+### Binary features
+
+#### Description
+Surveyor expects binary features to have two possible values and to be stored as bools or integers (with values of 0 or 1). In the example data, `app_inst` and `lylty` are binary features.
+
+#### Importing BinaryFeatures
+The binary feature tools from surveyor can be imported with the command below.
+
 ```python
 from surveyor import BinaryFeatures as BF
 ```
+
+#### Checking of all values the same
+
 
 ```python
 BF.check_all_same(df['app_inst'])
