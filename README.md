@@ -13,12 +13,27 @@ Surveyor is a small collection of tools for exploratory data analysis. It levera
 
 ### Using surveyor:
 - [Surveyor use instructions](#using-surveyor)
+    - [Binary features](#binary-features)
+        - [Importing BinaryFeatures](#binary-features-import)
+        - [Checking if all values the same](#binary-features-all-same)
+        - [Checking if values are mostly the same](#binary-features-mostly-same)
+        - [Checking the range](#binary-features-range)
+    - [Categorical features](#categorical-features)
+        - [Importing CategoricalFeatures](#categorical-features-import)
+        - [Checking if values are mostly the same](#categorical-features-import)
+        - [Checking number of categories](#categorical-features-n-categories)
+    - [General features](#general-features)
+        - TODO
+    - [Unique features](#unique-features)
+        - TODO
 
 ### Contributing and Testing:
-- [Contributing to surveyor](#survey-contribution)
-- [Testing surveyor](#surveyor-testing)
+- [Contributing to surveyor](#survey-contrib)
+- [Testing surveyor](#surveyor-test)
+
 
 <a name="pip-installing-surveyor"></a>
+
 ## Installing surveyor:
 Surveyor can be install via pip. As always, use of a project-level virtual environment is recommended.
 
@@ -29,23 +44,26 @@ Surveyor can be install via pip. As always, use of a project-level virtual envir
 $ pip install surveyor
 ```
 
+
 <a name="using-surveyor"></a>
+
 ## Using Surveyor:
 
 To demonstrate the tools available in surveyor, let's use a Pandas DataFrame named `df`.
 
-|    |   id | name    | state   | app_inst   |   lylty |   spend |
-|---:|-----:|:--------|:--------|:-----------|--------:|--------:|
-|  0 |    1 | Nick    | WA      | True       |       0 |       0 |
-|  1 |    2 | Gina    | OR      | True       |       1 |     nan |
-|  2 |    3 | Rob     | WA      | False      |       0 |      10 |
-|  3 |    4 | Adam    | ID      | True       |       1 |     150 |
-|  4 |    5 | Hanna   | WA      | True       |       1 |      12 |
-|  5 |    6 | Susan   | Null    | False      |       0 |       0 |
-|  6 |    7 | Quentin | WA      | True       |       1 |     nan |
-|  7 |    8 | Caitlyn | unknown | True       |       0 |       8 |
-|  8 |    9 | Matt    | WA      | True       |       1 |      50 |
-|  9 |   10 | Nick    | WA      | True       |       0 |     -10 |
+|    |   id | name    | state   | platform   | app_inst   |   lylty |   spend |
+|---:|-----:|:--------|:--------|:-----------|:-----------|--------:|--------:|
+|  0 |    1 | Nick    | WA      | ios        | True       |       0 |       0 |
+|  1 |    2 | Gina    | OR      | android    | True       |       1 |     nan |
+|  2 |    3 | Rob     | WA      | ios        | False      |       0 |      10 |
+|  3 |    4 | Adam    | ID      | web        | True       |       1 |     150 |
+|  4 |    5 | Hanna   | WA      | ios        | True       |       1 |      12 |
+|  5 |    6 | Susan   | Null    | android    | False      |       0 |       0 |
+|  6 |    7 | Quentin | WA      | ios        | True       |       1 |     nan |
+|  7 |    8 | Caitlyn | unknown | web        | True       |       0 |       8 |
+|  8 |    9 | Matt    | WA      | web        | True       |       1 |      50 |
+|  9 |   10 | Nick    | WA      | ios        | True       |       0 |     -10 |
+
 
 A data dictionary for `df` is below.
 
@@ -59,10 +77,16 @@ A data dictionary for `df` is below.
 | lylty    | int64   | loyalty program flag       |
 | spend    | float64 | total customer spend       |
 
+
+<a name="binary-features"></a>
+
 ### Binary features
 
 #### Description
 Surveyor expects binary features to have two possible values and to be stored as bools or integers (with values of 0 or 1). In the example data, `app_inst` and `lylty` are binary features.
+
+
+<a name="binary-features-import"></a>
 
 #### Importing BinaryFeatures
 The binary feature tools can be imported with the command below.
@@ -71,7 +95,10 @@ The binary feature tools can be imported with the command below.
 from surveyor import BinaryFeatures as BF
 ```
 
-#### Checking of all values the same
+
+<a name="binary-features-all-same"></a>
+
+#### Checking if all values the same
 The `check_all_same` method can be used to check if binary features contain exclusively the same value. This method can be applied to a single binary feature or a collection of binary features.
 
 ```python
@@ -90,6 +117,9 @@ BF.check_all_same(df[['app_inst', 'lylty']])
 |---:|:---------|:-----------|
 |  0 | app_inst | False      |
 |  1 | lylty    | False      |
+
+
+<a name="binary-features-mostly-same"></a>
 
 #### Checking if values are mostly the same
 The `check_mostly_same` method can be used to check if binary features contain mostly the same value (default threshold 95%). This method can be applied to a single binary feature or a collection of binary features.
@@ -111,7 +141,7 @@ BF.check_mostly_same(df[['app_inst', 'lylty']])
 |  0 | app_inst | False         |     0.95 |    0.8 |
 |  1 | lylty    | False         |     0.95 |    0.5 |
 
-The user can specify whatever threshold is appropriate for their usecase. If `thresh=0.7`, the method will flag features with at least 70% the same value.
+The user can specify whatever threshold is appropriate for their usecase. If `thresh=0.7` is applied, the method will flag features with at least 70% the same value.
 
 ```python
 BF.check_mostly_same(df['app_inst'], thresh=0.7)
@@ -129,6 +159,9 @@ BF.check_mostly_same(df[['app_inst', 'lylty']], thresh=0.7)
 |---:|:---------|:--------------|---------:|-------:|
 |  0 | app_inst | True          |      0.7 |    0.8 |
 |  1 | lylty    | False         |      0.7 |    0.5 |
+
+
+<a name="binary-features-range"></a>
 
 #### Checking the range
 The `check_outside_range` method can be used to detect features with data outside the expected range of 0 and 1. Note that the outside of range condition is only possible for binary features encoded as integer data type, but the method is able to check any binary feature regardless of data type.
@@ -150,10 +183,26 @@ BF.check_outside_range(df[['app_inst', 'lylty']])
 |  0 | app_inst | False           |
 |  1 | lylty    | False           |
 
-### Categorical Features
+
+<a name="categorical-features"></a>
+
+### Categorical features
+
+#### Description
+Surveyor expects categorical features to denote categories and to be stored as object (string) or integer type. In the example data, `state` and `platform` are categorical features.
+
+<a name="categoricqal-features-import"></a>
+
+#### Importing CategoricalFeatures
+The categorical feature tools can be imported with the command below.
 ```python
 from surveyor import CategoricalFeatures as CF
 ```
+
+<a name="categorical-features-mostly-same"></a>
+
+#### Checking if values are mostly the same
+The `check_mostly_same` method can be used to check if categorical features contain mostly the same value (default threshold 95%). This method can be applied to a single categorical feature or a collection of categorical features.
 
 ```python
 CF.check_mostly_same(df['state'])
@@ -164,14 +213,6 @@ CF.check_mostly_same(df['state'])
 |  0 | False         |     0.95 | WA            |       6 |    0.6 |
 
 ```python
-CF.check_mostly_same(df['state'], thresh=0.6)
-```
-
-|    | mostly_same   |   thresh | most_common   |   count |   prop |
-|---:|:--------------|---------:|:--------------|--------:|-------:|
-|  0 | True          |      0.6 | WA            |       6 |    0.6 |
-
-```python
 CF.check_mostly_same(df[['state', 'platform']])
 ```
 
@@ -179,6 +220,16 @@ CF.check_mostly_same(df[['state', 'platform']])
 |---:|:---------|:--------------|---------:|:--------------|--------:|-------:|
 |  0 | state    | False         |     0.95 | WA            |       6 |    0.6 |
 |  1 | platform | False         |     0.95 | ios           |       5 |    0.5 |
+
+The user can specify whatever threshold is appropriate for their usecase. If `thresh=0.7` is applied, the method will flag features with at least 70% the same value.
+
+```python
+CF.check_mostly_same(df['state'], thresh=0.6)
+```
+
+|    | mostly_same   |   thresh | most_common   |   count |   prop |
+|---:|:--------------|---------:|:--------------|--------:|-------:|
+|  0 | True          |      0.6 | WA            |       6 |    0.6 |
 
 ```python
 CF.check_mostly_same(df[['state', 'platform']], thresh=0.6)
@@ -188,6 +239,12 @@ CF.check_mostly_same(df[['state', 'platform']], thresh=0.6)
 |---:|:---------|:--------------|---------:|:--------------|--------:|-------:|
 |  0 | state    | True          |      0.6 | WA            |       6 |    0.6 |
 |  1 | platform | False         |      0.6 | ios           |       5 |    0.5 |
+
+
+<a name="categorical-features-n-categories"></a>
+
+#### Checking number of categories
+The `n_categories` method can be used to count the number of categories. This method can be applied to a single categorical feature or a collection of categorical features.
 
 ```python
 CF.check_n_categories(df['state'])
@@ -206,7 +263,10 @@ CF.check_n_categories(df[['state', 'platform']])
 |  0 | state    |              4 |
 |  1 | platform |              3 |
 
-### General Features
+
+<a name="general-features"></a>
+
+### General features
 ```python
 from surveyor import GeneralFeatures as GF
 ```
@@ -276,7 +336,10 @@ GF.check_nulls(df)
 |  5 | lylty    | False           |            0 |         0   |
 |  6 | spend    | True            |            2 |         0.2 |
 
-### Unique Features
+
+<a name="unique-features"></a>
+
+### Unique features
 ```python
 from surveyor import UniqueFeatures as UF
 ```
@@ -300,8 +363,8 @@ UF.check_uniqueness(df[['id', 'name']])
 |  1 | name     | True            |            1 |         0.1 |
 
 
+<a name="surveyor-test"></a>
 
-<a name="surveyor-testing"></a>
 ## Testing:
 For those interested in contributing to surveyor forking and editing the project, pytest is the testing framework used. To run the tests, create a virtual environment, install the contents of `dev_requirements.txt`, and run the following command from the root directory of the project. The testing scripts can be found in the `tests/` directory.
 
