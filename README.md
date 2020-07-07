@@ -25,7 +25,8 @@ Surveyor is a small collection of tools for exploratory data analysis. It levera
     - [General features](#general-features)
         - TODO
     - [Unique features](#unique-features)
-        - TODO
+        - [Importing UniqueFeatures](#unique-features-import)
+        - [Checking uniqueness](#unique-features-uniqueness)
 
 ### Contributing and Testing:
 - [Contributing to surveyor](#survey-contrib)
@@ -37,7 +38,7 @@ Surveyor is a small collection of tools for exploratory data analysis. It levera
 ## Installing surveyor:
 Surveyor can be install via pip. As always, use of a project-level virtual environment is recommended.
 
- **Surveyor requires Python >= 3.6.**
+**Surveyor requires Python >= 3.6.**
 
 # TODO: not yet deployed to PyPI
 ```bash
@@ -164,7 +165,7 @@ BF.check_mostly_same(df[['app_inst', 'lylty']], thresh=0.7)
 <a name="binary-features-range"></a>
 
 #### Checking the range
-The `check_outside_range` method can be used to detect features with data outside the expected range of 0 and 1. Note that the outside of range condition is only possible for binary features encoded as integer data type, but the method is able to check any binary feature regardless of data type.
+The `check_outside_range` method can be used to detect features with data outside the expected range of 0 and 1. Note that the outside of range condition is only possible for binary features encoded as integer data type.
 
 ```python
 BF.check_outside_range(df['app_inst'])
@@ -189,9 +190,9 @@ BF.check_outside_range(df[['app_inst', 'lylty']])
 ### Categorical features
 
 #### Description
-Surveyor expects categorical features to denote categories and to be stored as object (string) or integer type. In the example data, `state` and `platform` are categorical features.
+Categorical features encode information about category. Surveyor expects categorical features to be stored as object (string) or integer type. In the example data, `state` and `platform` are categorical features.
 
-<a name="categoricqal-features-import"></a>
+<a name="categorical-features-import"></a>
 
 #### Importing CategoricalFeatures
 The categorical feature tools can be imported with the command below.
@@ -340,9 +341,25 @@ GF.check_nulls(df)
 <a name="unique-features"></a>
 
 ### Unique features
+
+#### Description
+Unique features should have a unique value for each observation. Surveyor expects unique features to be stored as datetime, object (string), or integer type. In the example data, `id` is a unique feature.
+
+
+<a name="unique-features-import"></a>
+
+#### Importing UniqueFeatures
+The unique feature tools can be imported with the command below.
+
 ```python
 from surveyor import UniqueFeatures as UF
 ```
+
+
+<a name="unique-features-uniqueness"></a>
+
+#### Checking uniqueness
+The `check_uniqueness` method can be used to check if potentially unique features contain unique values. This method can be applied to a single binary feature or a collection of binary features.
 
 ```python
 UF.check_uniqueness(sample_df['id'])
