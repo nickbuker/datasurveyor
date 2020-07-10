@@ -47,7 +47,7 @@ $ pip install surveyor
 
 <a name="using-surveyor"></a>
 
-## Using Surveyor:
+## Using Surveyor
 
 To demonstrate the tools available in surveyor, let's use a Pandas DataFrame named `df`.
 
@@ -402,9 +402,23 @@ UF.check_uniqueness(df[['id', 'name']])
 |  1 | name     | True            |            1 |         0.1 |
 
 
+<a name="surveyor-contrib"></a>
+
+## Contributing to surveyor
+If you are interested in contributing to this project:
+1. Fork the [surveyor repo](https://github.com/nickbuker/surveyor).
+1. Clone the forked repository to your machine.
+1. Create a git branch.
+1. Make changes and push them to GitHub.
+1. Submit your changes for review by creating a pull request. In order to be approved changes should include:
+    - Appropriate updates to the `README.md`
+    - Google style docstrings
+    - Tests providing proper coverage of new code
+
+
 <a name="surveyor-test"></a>
 
-## Testing:
+## Testing
 For those interested in contributing to surveyor forking and editing the project, pytest is the testing framework used. To run the tests, create a virtual environment, install the contents of `dev_requirements.txt`, and run the following command from the root directory of the project. The testing scripts can be found in the `tests/` directory.
 
 ```bash
