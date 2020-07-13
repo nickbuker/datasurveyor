@@ -4,7 +4,7 @@ build-backend = "flit.buildapi"
 
 
 [tool.flit.metadata]
-module = "surveyor"
+module = "datasurveyor"
 author = "Nick Buker"
 author-email = "nickbuker@gmail.com"
 home-page = "https://github.com/nickbuker/surveyor"
