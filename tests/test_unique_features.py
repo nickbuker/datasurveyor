@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # local imports
-from surveyor import UniqueFeatures as uf
+from datasurveyor import UniqueFeatures as uf
 
 
 # should pass all checks

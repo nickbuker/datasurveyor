@@ -92,7 +92,7 @@ The methods within `BinaryFeatures` are intended for use with binary data (data 
 The binary feature tools can be imported with the command below.
 
 ```python
-from surveyor import BinaryFeatures as BF
+from datasurveyor import BinaryFeatures as BF
 ```
 
 
@@ -196,7 +196,7 @@ The methods within `CategoricalFeatures` are intended for use with categorical d
 ### Importing CategoricalFeatures
 The categorical feature tools can be imported with the command below.
 ```python
-from surveyor import CategoricalFeatures as CF
+from datasurveyor import CategoricalFeatures as CF
 ```
 
 <a name="categorical-features-mostly-same"></a>
@@ -278,7 +278,7 @@ The methods within `GeneralFeatures` are intended for use with any data. Surveyo
 The general feature tools can be imported with the command below.
 
 ```python
-from surveyor import GeneralFeatures as GF
+from datasurveyor import GeneralFeatures as GF
 ```
 
 <a name="general-features-nulls"></a>
@@ -374,7 +374,7 @@ The methods within `UniqueFeatures` are intended for use with data where each ob
 The unique feature tools can be imported with the command below.
 
 ```python
-from surveyor import UniqueFeatures as UF
+from datasurveyor import UniqueFeatures as UF
 ```
 
 

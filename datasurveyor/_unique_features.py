@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 # local imports
-from surveyor import _utils
+from datasurveyor import _utils
 
 
 class UniqueFeatures:

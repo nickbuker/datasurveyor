@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 # third party imports
 import pandas as pd
 # local imports
-from surveyor import _utils
+from datasurveyor import _utils
 
 
 class GeneralFeatures:
