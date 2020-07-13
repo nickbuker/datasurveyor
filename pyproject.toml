@@ -2,6 +2,7 @@
 requires = ["flit"]
 build-backend = "flit.buildapi"
 
+
 [tool.flit.metadata]
 module = "surveyor"
 author = "Nick Buker"
@@ -10,11 +11,6 @@ home-page = "https://github.com/nickbuker/surveyor"
 requires = [
     "pandas >=1.0.4",
 ]
-test = [
-    "pytest >=5.4.3",
-    "pytest-cov >=2.10.0",
-
-]
 requires-python = "~=3.6,<4"
 description-file = "README.md"
 classifiers = [
@@ -22,6 +18,14 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
 ]
+
+
+[tool.flit.metadata.requires-extra]
+test = [
+    "pytest >=5.4.3",
+    "pytest-cov >=2.10.0",
+]
+
 
 [tool.flit.sdist]
 exclude = [
