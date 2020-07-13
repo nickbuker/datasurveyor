@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1] - 2020-07-13
 ### Fixed
-- Update docs to reflect package name change from `surveyor` to `datasurveyor
+- Update docs to reflect package name change from `surveyor` to `datasurveyor`
 
 
 ## [0.0.0] - 2020-07-13
