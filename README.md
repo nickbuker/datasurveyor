@@ -1,18 +1,18 @@
-# Surveyor
+# Datasurveyor
 
 ## Author:
 Nick Buker
 
 ## Introduction:
-Surveyor is a small collection of tools for exploratory data analysis. It leverages Pandas, but the tools are able to ingest either DataFrames or Series. The output is a tidy DataFrame for easy viewing of results. Currently, surveyor focuses on rapidly identifying data quality issues, but the scope will likely expand as the package becomes "battle tested".
+Datasurveyor is a small collection of tools for exploratory data analysis. It leverages Pandas, but the tools are able to ingest either DataFrames or Series. The output is a tidy DataFrame for easy viewing of results. Currently, datasurveyor focuses on rapidly identifying data quality issues, but the scope will likely expand as the package becomes "battle tested".
 
 ## Table of contents:
 
-### Installing surveyor:
-[Surveyor installation instructions](#pip-installing-surveyor)
+### Installing datasurveyor:
+[Datasurveyor installation instructions](#pip-installing-datasurveyor)
 
-### Using surveyor:
-[Surveyor use instructions](#using-surveyor)
+### Using datasurveyor:
+[Datasurveyor use instructions](#using-datasurveyor)
 - [Binary features](#binary-features)
     - [Importing BinaryFeatures](#binary-features-import)
     - [Checking if all values the same](#binary-features-all-same)
@@ -31,25 +31,25 @@ Surveyor is a small collection of tools for exploratory data analysis. It levera
     - [Checking uniqueness](#unique-features-uniqueness)
 
 ### Contributing and Testing:
-- [Contributing to surveyor](#survey-contrib)
-- [Testing surveyor](#surveyor-test)
+- [Contributing to datasurveyor](#survey-contrib)
+- [Testing datasurveyor](#datasurveyor-test)
 
 
-<a name="pip-installing-surveyor"></a>
+<a name="pip-installing-datasurveyor"></a>
 
-## Installing surveyor:
-Surveyor can be install via pip. As always, use of a project-level virtual environment is recommended. **Note: Surveyor requires Python >= 3.6.**
+## Installing datasurveyor:
+Datasurveyor can be install via pip. As always, use of a project-level virtual environment is recommended. **Note: Datasurveyor requires Python >= 3.6.**
 
 ```bash
-$ pip install surveyor
+$ pip install datasurveyor
 ```
 
 
-<a name="using-surveyor"></a>
+<a name="using-datasurveyor"></a>
 
-## Using Surveyor
+## Using Datasurveyor
 
-To demonstrate the tools available in surveyor, let's use a Pandas DataFrame named `df`.
+To demonstrate the tools available in datasurveyor, let's use a Pandas DataFrame named `df`.
 
 |    |   id | name    | state   | platform   | app_inst   |   lylty |   spend |
 |---:|-----:|:--------|:--------|:-----------|:-----------|--------:|--------:|
@@ -83,7 +83,7 @@ A data dictionary for `df` is below.
 ## Binary features
 
 ### Description
-The methods within `BinaryFeatures` are intended for use with binary data (data with two possible values). Surveyor expects binary features to be stored as bools or integers (with values of 0 or 1). In the example data, `app_inst` and `lylty` are binary features.
+The methods within `BinaryFeatures` are intended for use with binary data (data with two possible values). Datasurveyor expects binary features to be stored as bools or integers (with values of 0 or 1). In the example data, `app_inst` and `lylty` are binary features.
 
 
 <a name="binary-features-import"></a>
@@ -189,7 +189,7 @@ BF.check_outside_range(df[['app_inst', 'lylty']])
 ## Categorical features
 
 ### Description
-The methods within `CategoricalFeatures` are intended for use with categorical data (data denoting categories). Surveyor expects categorical features to be stored as object (string) or integer type. In the example data, `state` and `platform` are categorical features.
+The methods within `CategoricalFeatures` are intended for use with categorical data (data denoting categories). Datasurveyor expects categorical features to be stored as object (string) or integer type. In the example data, `state` and `platform` are categorical features.
 
 <a name="categorical-features-import"></a>
 
@@ -269,7 +269,7 @@ CF.check_n_categories(df[['state', 'platform']])
 ## General features
 
 ### Description
-The methods within `GeneralFeatures` are intended for use with any data. Surveyor expects inputs to be of type Pandas Series or DataFrame, but has no type expectations for the data within those structures.
+The methods within `GeneralFeatures` are intended for use with any data. Datasurveyor expects inputs to be of type Pandas Series or DataFrame, but has no type expectations for the data within those structures.
 
 
 <a name="general-features-import"></a>
@@ -365,7 +365,7 @@ GF.check_fuzzy_nulls(df, add_fuzzy_nulls=['unknown'])
 ## Unique features
 
 ### Description
-The methods within `UniqueFeatures` are intended for use with data where each observation has a unique value. Surveyor expects unique features to be stored as datetime, object (string), or integer type. In the example data, `id` is a unique feature.
+The methods within `UniqueFeatures` are intended for use with data where each observation has a unique value. Datasurveyor expects unique features to be stored as datetime, object (string), or integer type. In the example data, `id` is a unique feature.
 
 
 <a name="unique-features-import"></a>
@@ -402,11 +402,11 @@ UF.check_uniqueness(df[['id', 'name']])
 |  1 | name     | True            |            1 |         0.1 |
 
 
-<a name="surveyor-contrib"></a>
+<a name="datasurveyor-contrib"></a>
 
-## Contributing to surveyor
+## Contributing to datasurveyor
 If you are interested in contributing to this project:
-1. Fork the [surveyor repo](https://github.com/nickbuker/surveyor).
+1. Fork the [datasurveyor repo](https://github.com/nickbuker/datasurveyor).
 1. Clone the forked repository to your machine.
 1. Create a git branch.
 1. Make changes and push them to GitHub.
@@ -416,10 +416,10 @@ If you are interested in contributing to this project:
     - Tests providing proper coverage of new code
 
 
-<a name="surveyor-test"></a>
+<a name="datasurveyor-test"></a>
 
 ## Testing
-For those interested in contributing to surveyor forking and editing the project, pytest is the testing framework used. To run the tests, create a virtual environment, install the contents of `dev_requirements.txt`, and run the following command from the root directory of the project. The testing scripts can be found in the `tests/` directory.
+For those interested in contributing to datasurveyor forking and editing the project, pytest is the testing framework used. To run the tests, create a virtual environment, install the contents of `dev_requirements.txt`, and run the following command from the root directory of the project. The testing scripts can be found in the `tests/` directory.
 
 ```bash
 $ pytest
@@ -428,5 +428,5 @@ $ pytest
 To run tests and view coverage, use the below command:
 
 ```bash
-$ pytest --cov=surveyor
+$ pytest --cov=datasurveyor
 ```
